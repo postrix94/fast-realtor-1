@@ -1,0 +1,91 @@
+version: "3.9"
+
+networks:
+  db:
+    driver: bridge
+
+services:
+  php:
+    container_name: backend_fr
+    build:
+      context: .
+      dockerfile: ./php/Dockerfile
+    volumes:
+      - ./src:/var/www/fast-realtor
+    ports:
+      - "80:80"
+    networks:
+      db:
+    depends_on:
+      - database
+
+#  composer:
+#    container_name: composer
+#    build:
+#      context: .
+#      dockerfile: ./composer/Dockerfile
+#    volumes:
+#      - ./src:/var/www/fast-realtor
+#    depends_on:
+#      - php
+
+  artisan:
+    container_name: artisan_fr
+    build:
+      context: .
+      dockerfile: ./artisan/Dockerfile
+    volumes:
+      - ./src:/var/www/fast-realtor
+    depends_on:
+      - php
+    networks:
+      db:
+
+
+  node:
+    container_name: front_fr
+    build:
+      context: .
+      dockerfile: ./node/Dockerfile
+    volumes:
+      - ./src:/var/www/fast-realtor
+    ports:
+      - "5173:5173"
+    depends_on:
+      - php
+
+  database:
+    container_name: mysql_fr
+    build:
+      context: .
+      dockerfile: ./db/Dockerfile
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+    volumes:
+      - ./db/mysql/fast-realtor:/var/lib/mysql
+    networks:
+      db:
+    ports:
+      - "3306:3306"
+
+  php_my_admin:
+    container_name: php_my_admin_fr
+    build:
+      context: .
+      dockerfile: ./php_my_admin/Dockerfile
+    ports:
+      - "8080:80"
+    environment:
+      PMA_HOST: database
+    depends_on:
+      - database
+    networks:
+      db:
+
+
+
+

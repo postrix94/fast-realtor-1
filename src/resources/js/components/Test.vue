@@ -7,16 +7,13 @@
 </template>
 
 <script>
-import iziToast from "izitoast";
+
 
 export default {
     name: "Test",
 
     mounted() {
-        iziToast.show({
-            title: 'Hey',
-            message: 'What would you like to add?'
-        });
+        this.$errorNotify("Terst")
     }
 }
 </script>

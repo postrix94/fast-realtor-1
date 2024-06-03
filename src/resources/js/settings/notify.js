@@ -1,12 +1,13 @@
 import iziToast from "izitoast";
 
 iziToast.settings({
-    theme: 'dark',
+    theme: 'light',
     close: true,
     position: "topRight",
     transitionIn: "fadeInDown",
     transitionOut: "fadeOutUp",
-
+    timeout: 3000,
+    displayMode: "once",
 });
 
 

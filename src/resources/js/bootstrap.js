@@ -15,4 +15,7 @@ app.config.globalProperties.$warningNotify = warningNotify;
 import Test from "./components/Test.vue";
 app.component("Test", Test);
 
+import Login from "./views/login/Login.vue";
+app.component("Login", Login);
+
 app.mount("#app");

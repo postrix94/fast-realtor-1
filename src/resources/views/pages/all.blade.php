@@ -8,17 +8,28 @@
     <title>Document</title>
 </head>
 <body>
+
+@can("assign-role")
 <h1>Public Link</h1>
+@endcan
+
+@role("vip_user|super_admin")
 <h1>save images</h1>
 <h1>send to telegram</h1>
+@endrole
+
+@role('admin|super_admin')
 <h1>view user</h1>
 <h1>add new user</h1>
 <h1>blocked user</h1>
 <h1>view user payment</h1>
+@endrole
+
 @role('super_admin')
 <h1>assign role</h1>
 <h1>change role</h1>
 <h1>remove role</h1>
 @endrole
+
 </body>
 </html>

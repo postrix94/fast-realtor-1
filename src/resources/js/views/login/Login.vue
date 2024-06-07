@@ -33,6 +33,12 @@ import iziToast from "izitoast";
 export default {
     name: "Login",
     components: {DefaultButton,},
+    props: {
+        url: {
+            type: String,
+            default: "",
+        }
+    },
     mounted() {
         iziToast.settings({
             position: "topCenter",
@@ -75,15 +81,30 @@ export default {
         },
 
         onClickBtn() {
-            if(!this.validatePhone()) {
+            if (!this.validatePhone()) {
                 this.$errorNotify("Номер введено невірно");
                 return;
             }
 
-            if(!this.isValidPassword()) {
+            if (!this.isValidPassword()) {
                 this.$errorNotify("Мінімальна довжина паролю 5 символів");
                 return;
             }
+
+            const data = {"phone": this.phone, "password": this.password};
+
+            axios.post(this.url, data)
+                .then(this.successResponse)
+                .catch(this.errorResponse);
+        },
+
+        successResponse(response) {
+            if(response.data.message === 'success') {
+                window.location = response.data.url;
+            }
+        },
+        errorResponse(error) {
+            this.$errorNotify(error.response.data.message);
         },
     }
 

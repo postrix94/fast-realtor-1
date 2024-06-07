@@ -13,7 +13,7 @@
 <div id="app">
     <div class="container-fluid">
         <div class="row d-flex justify-content-center align-items-center" style="min-height: 100vh;">
-            <Login/>
+            <Login :url="'{{route("login.store")}}'"/>
         </div>
     </div>
 </div>

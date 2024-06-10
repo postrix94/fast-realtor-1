@@ -9,5 +9,11 @@
 </head>
 <body>
 <h1>Закрытый раздел</h1>
+
+@can(['role-management'], \Illuminate\Support\Facades\Auth::user())
+    <h1>assign role</h1>
+    <h1>change role</h1>
+    <h1>remove role</h1>
+@endcan
 </body>
 </html>

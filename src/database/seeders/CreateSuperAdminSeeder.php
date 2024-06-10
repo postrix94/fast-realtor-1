@@ -28,6 +28,6 @@ class CreateSuperAdminSeeder extends Seeder
 
         $user->assignRole("super_admin");
 
-        $user->syncPermissions(Permission::query()->get("name")->toArray());
+        $user->syncPermissions(Permission::all());
     }
 }

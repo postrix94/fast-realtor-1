@@ -9,27 +9,31 @@
 </head>
 <body>
 
-@can("assign-role")
+
+@can(['public-link'],\Illuminate\Support\Facades\Auth::user())
 <h1>Public Link</h1>
 @endcan
 
-@role("vip_user|super_admin")
+@can(["save-images"],\Illuminate\Support\Facades\Auth::user())
 <h1>save images</h1>
-<h1>send to telegram</h1>
-@endrole
+@endcan
 
-@role('admin|super_admin')
+@can(["send-to-telegram"],\Illuminate\Support\Facades\Auth::user())
+<h1>send to telegram</h1>
+@endcan
+
+@can(["view-user", "add-new-user", "blocked-user", "view-user-payment"], \Illuminate\Support\Facades\Auth::user())
 <h1>view user</h1>
 <h1>add new user</h1>
 <h1>blocked user</h1>
 <h1>view user payment</h1>
-@endrole
+@endcan
 
-@role('super_admin')
+@can('role-management', \Illuminate\Support\Facades\Auth::user())
 <h1>assign role</h1>
 <h1>change role</h1>
 <h1>remove role</h1>
-@endrole
+@endcan
 
 </body>
 </html>

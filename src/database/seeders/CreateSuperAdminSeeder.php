@@ -26,8 +26,8 @@ class CreateSuperAdminSeeder extends Seeder
             'updated_at' => Carbon::now()->timestamp,
         ]);
 
-        $user->assignRole("super_admin");
+        $user->assignRole(['guard_name' => 'admin', 'name' => Config::get("super_admin.role_name")]);
 
-        $user->syncPermissions(Permission::all());
+//        $user->syncPermissions(Permission::all());
     }
 }

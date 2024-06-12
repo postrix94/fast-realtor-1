@@ -17,29 +17,43 @@ class CreateRolesAndPermissionsSeeder extends Seeder
     {
         foreach (Config::get("permission.roles_to_permissions") as $role => $permissions) {
 
-
            if(in_array($role, Config::get("permission.guard_by_roles.web"))) {
                $newRole = Role::create(['name' => $role, 'guard_name' => "web"]);
+               foreach ($permissions as $permission) {
+
+                   if(in_array($permission, Config::get("permission.guard_by_permissions.web"))) {
+                       Permission::create(['name' => $permission, 'guard_name' => 'web']);
+                       $newRole->givePermissionTo($permission);
+                   }
+
+//               if(in_array($permission, Config::get("permission.guard_by_permissions.admin"))){
+//                   Permission::create(['name' => $permission, 'guard_name' => 'admin']);
+//                   $newRole->givePermissionTo($permission);
+//               }
+//
+//
+               }
            }
 
-           if(in_array($role, Config::get("permission.guard_by_roles.admin"))){
+//           if(in_array($role, Config::get("permission.guard_by_roles.admin"))){
                $newRole = Role::create(['name' => $role, 'guard_name' => "admin"]);
-           }
+            foreach ($permissions as $permission) {
 
-           foreach ($permissions as $permission) {
+//                if(in_array($permission, Config::get("permission.guard_by_permissions.web"))) {
+//                    Permission::create(['name' => $permission, 'guard_name' => 'web']);
+//                    $newRole->givePermissionTo($permission);
+//                }
 
-               if(in_array($permission, Config::get("permission.guard_by_permissions.web"))) {
-                   Permission::create(['name' => $permission, 'guard_name' => 'web']);
-                   $newRole->givePermissionTo($permission);
-               }
+//               if(in_array($permission, Config::get("permission.guard_by_permissions.admin"))){
+                Permission::create(['name' => $permission, 'guard_name' => 'admin']);
+                $newRole->givePermissionTo($permission);
+//               }
+//
+//
+            }
+//           }
 
-               if(in_array($permission, Config::get("permission.guard_by_permissions.admin"))){
-                   Permission::create(['name' => $permission, 'guard_name' => 'admin']);
-                   $newRole->givePermissionTo($permission);
-               }
 
-
-           }
         }
     }
 }

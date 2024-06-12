@@ -6,6 +6,7 @@ use App\Models\User;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Carbon;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
@@ -26,8 +27,11 @@ class CreateSuperAdminSeeder extends Seeder
             'updated_at' => Carbon::now()->timestamp,
         ]);
 
-        $user->assignRole(['guard_name' => 'admin', 'name' => Config::get("super_admin.role_name")]);
+        $permissions = Permission::select(["name"])->where("guard_name", "admin")->get();
 
-//        $user->syncPermissions(Permission::all());
+        Config::set("auth.defaults.guard", "admin");
+
+        $user->assignRole(["name" => Config::get("super_admin.role_name"), "guard_name" => "admin"]);
+        $user->givePermissionTo($permissions->toArray());
     }
 }

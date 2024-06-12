@@ -27,11 +27,11 @@ class CreateSuperAdminSeeder extends Seeder
             'updated_at' => Carbon::now()->timestamp,
         ]);
 
-        $permissions = Permission::select(["name"])->where("guard_name", "admin")->get();
+        $permissions = Permission::all();
 
         Config::set("auth.defaults.guard", "admin");
 
-        $user->assignRole(["name" => Config::get("super_admin.role_name"), "guard_name" => "admin"]);
-        $user->givePermissionTo($permissions->toArray());
+        $user->assignRole(["name" => Config::get("super_admin.role_name")]);
+        $user->givePermissionTo($permissions);
     }
 }

@@ -67,7 +67,7 @@ class UserPolicy
     public function viewUser(User $user = null) {
         if(is_null($user)) return  false;
 
-        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("view user"));
+        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("view user", "admin"));
     }
 
     /**
@@ -78,7 +78,7 @@ class UserPolicy
         if(is_null($user)) return  false;
 
 
-        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("add new user"));
+        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("add new user", "admin"));
     }
 
     /**
@@ -88,7 +88,7 @@ class UserPolicy
     public function blockedUser(User $user = null) {
         if(is_null($user)) return  false;
 
-        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("blocked user"));
+        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("blocked user", "admin"));
     }
 
     /**
@@ -98,7 +98,7 @@ class UserPolicy
     public function viewUserPayment(User $user = null) {
         if(is_null($user)) return  false;
 
-        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("view user payment"));
+        return ($user->hasRole(["admin"]) && $user->hasPermissionTo("view user payment", "admin"));
     }
 
 
@@ -120,7 +120,7 @@ class UserPolicy
     {
         if (is_null($user)) return false;
 
-        return ($user->hasRole(["super_admin"]) && $user->hasPermissionTo("assign role"));
+        return ($user->hasRole(["super_admin"]) && $user->hasPermissionTo("assign role", "admin"));
     }
 
     /**
@@ -131,7 +131,7 @@ class UserPolicy
     {
         if (is_null($user)) return false;
 
-        return ($user->hasRole(["super_admin"]) && $user->hasPermissionTo("change role"));
+        return ($user->hasRole(["super_admin"]) && $user->hasPermissionTo("change role", "admin"));
     }
 
     /**
@@ -142,6 +142,6 @@ class UserPolicy
     {
         if (is_null($user)) return false;
 
-        return ($user->hasRole(["super_admin"]) && $user->hasPermissionTo("remove role"));
+        return ($user->hasRole(["super_admin"]) && $user->hasPermissionTo("remove role", "admin"));
     }
 }

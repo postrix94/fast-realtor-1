@@ -22,14 +22,14 @@
 <h1>send to telegram</h1>
 @endcan
 
-@can(["view-user", "add-new-user", "blocked-user", "view-user-payment"], \Illuminate\Support\Facades\Auth::user())
+@can(["view-user", "add-new-user", "blocked-user", "view-user-payment"], \Illuminate\Support\Facades\Auth::guard("admin")->user())
 <h1>view user</h1>
 <h1>add new user</h1>
 <h1>blocked user</h1>
 <h1>view user payment</h1>
 @endcan
 
-@can('role-management', \Illuminate\Support\Facades\Auth::user())
+@can('role-management', \Illuminate\Support\Facades\Auth::guard("admin")->user())
 <h1>assign role</h1>
 <h1>change role</h1>
 <h1>remove role</h1>

@@ -16,6 +16,9 @@ import Test from "./components/Test.vue";
 app.component("Test", Test);
 
 import Login from "./views/login/Login.vue";
+import LoginAdmin from "./views/login/LoginAdmin.vue";
+
 app.component("Login", Login);
+app.component("LoginAdmin", LoginAdmin);
 
 app.mount("#app");

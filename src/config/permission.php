@@ -199,9 +199,26 @@ return [
             "add new user",
             "blocked user",
             "view user payment",
-
         ],
         "super_admin" => [
+            "assign role",
+            "change role",
+            "remove role",
+        ],
+    ],
+
+    "guard_by_roles" => [
+        "web" => ["user", "vip_user",],
+        "admin" => ["admin", "super_admin"]
+    ],
+
+    "guard_by_permissions" => [
+        "web" => ["public link", "save images", "send to telegram",],
+        "admin" => [
+            "view user",
+            "add new user",
+            "blocked user",
+            "view user payment",
             "assign role",
             "change role",
             "remove role",

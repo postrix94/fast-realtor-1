@@ -16,12 +16,44 @@ class CreateRolesAndPermissionsSeeder extends Seeder
     public function run(): void
     {
         foreach (Config::get("permission.roles_to_permissions") as $role => $permissions) {
-           $newRole = Role::create(['name' => $role]);
 
-           foreach ($permissions as $permission) {
-               Permission::create(['name' => $permission]);
-               $newRole->givePermissionTo($permission);
+           if(in_array($role, Config::get("permission.guard_by_roles.web"))) {
+               $newRole = Role::create(['name' => $role, 'guard_name' => "web"]);
+               foreach ($permissions as $permission) {
+
+                   if(in_array($permission, Config::get("permission.guard_by_permissions.web"))) {
+                       Permission::create(['name' => $permission, 'guard_name' => 'web']);
+                       $newRole->givePermissionTo($permission);
+                   }
+
+//               if(in_array($permission, Config::get("permission.guard_by_permissions.admin"))){
+//                   Permission::create(['name' => $permission, 'guard_name' => 'admin']);
+//                   $newRole->givePermissionTo($permission);
+//               }
+//
+//
+               }
            }
+
+//           if(in_array($role, Config::get("permission.guard_by_roles.admin"))){
+               $newRole = Role::create(['name' => $role, 'guard_name' => "admin"]);
+            foreach ($permissions as $permission) {
+
+//                if(in_array($permission, Config::get("permission.guard_by_permissions.web"))) {
+//                    Permission::create(['name' => $permission, 'guard_name' => 'web']);
+//                    $newRole->givePermissionTo($permission);
+//                }
+
+//               if(in_array($permission, Config::get("permission.guard_by_permissions.admin"))){
+                Permission::create(['name' => $permission, 'guard_name' => 'admin']);
+                $newRole->givePermissionTo($permission);
+//               }
+//
+//
+            }
+//           }
+
+
         }
     }
 }

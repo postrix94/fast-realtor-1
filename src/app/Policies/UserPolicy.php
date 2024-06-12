@@ -77,6 +77,7 @@ class UserPolicy
     public function addNewUser(User $user = null) {
         if(is_null($user)) return  false;
 
+
         return ($user->hasRole(["admin"]) && $user->hasPermissionTo("add new user"));
     }
 

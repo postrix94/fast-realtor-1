@@ -3,26 +3,26 @@
 namespace App\Http\Controllers\Login;
 
 use App\Http\Controllers\Controller;
-use App\Http\Requests\Login\LoginRequest;
+use App\Http\Requests\Login\LoginAdminRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
-class LoginController extends Controller
+class LoginAdminController extends Controller
 {
     public function index()
     {
-        return view("pages.login.login");
+        return view("pages.login.login_admin");
     }
 
     /**
-     * @param LoginRequest $request
+     * @param LoginAdminRequest $request
      * @return \Illuminate\Http\JsonResponse
      */
-    public function store(LoginRequest $request)
+    public function store(LoginAdminRequest $request)
     {
         $credentials = $request->only(["phone", "password"]);
 
-        if (!Auth::attempt($credentials)) {
+        if (!Auth::guard("admin")->attempt($credentials)) {
             return response()->json(["message" => "Невірно введено логін або пароль"], 422);
         }
 
@@ -30,7 +30,9 @@ class LoginController extends Controller
             return response()->json(["message" => "Ваш обліковий запис заблоковано"], 422);
         }
 
+//        Првоерить админ или супер админ
+
         $request->session()->regenerate();
-        return response()->json(["message" => "success", "url" => route("home")]);
+        return response()->json(["message" => "success", "url" => route("security")]);
     }
 }

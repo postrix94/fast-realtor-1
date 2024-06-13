@@ -9,7 +9,6 @@
 </head>
 <body>
 
-
 @can(['public-link'],\Illuminate\Support\Facades\Auth::user())
 <h1>Public Link</h1>
 @endcan

@@ -7,8 +7,6 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(["guest"])->group(function () {
     Route::get("login", [LoginController::class, "index"])->name("login");
     Route::post("login", [LoginController::class, "store"])->name("login.store");
-
-
 });
 
 Route::name("admin.")->prefix("admin")->middleware(["guest:admin"])->group(function() {
@@ -28,7 +26,7 @@ Route::group(["middleware" => ["auth"],], function () {
         return view("pages.all");
 //        }
 
-    });
+    })->name("all");
 
 });
 
@@ -41,4 +39,4 @@ Route::get("security", function () {
     return abort(404);
 
 
-})->middleware("auth:admin")->name("security");
+})->middleware(["auth:admin", "role:super_admin"])->name("security");

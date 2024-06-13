@@ -26,15 +26,23 @@ class LoginAdminController extends Controller
             return response()->json(["message" => "Невірно введено логін або пароль"], 422);
         }
 
+        if(!Auth::guard("admin")->user()->hasRole(["admin"])) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
+            return response()->json(["message" => "Невірно введено логін або пароль"], 422);
+        }
 
         if (Auth::guard("admin")->user()->is_blocked) {
+            $request->session()->invalidate();
+            $request->session()->regenerateToken();
+
             return response()->json(["message" => "Ваш обліковий запис заблоковано"], 422);
         }
 
-//        Првоерить админ или супер админ
-
         Auth::attempt($credentials);
         $request->session()->regenerate();
+
         return response()->json(["message" => "success", "url" => route("security")]);
     }
 }

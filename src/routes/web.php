@@ -1,5 +1,6 @@
 <?php
 
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Login\LoginAdminController;
 use App\Http\Controllers\Login\LoginController;
 use Illuminate\Support\Facades\Route;
@@ -7,28 +8,20 @@ use Illuminate\Support\Facades\Route;
 Route::middleware(["guest"])->group(function () {
     Route::get("login", [LoginController::class, "index"])->name("login");
     Route::post("login", [LoginController::class, "store"])->name("login.store");
-
-
 });
 
-Route::name("admin.")->prefix("admin")->middleware(["guest:admin"])->group(function() {
+Route::name("admin.")->prefix("admin")->middleware(["guest:admin"])->group(function () {
     Route::get("login", [LoginAdminController::class, "index"])->name("login");
     Route::post("login", [LoginAdminController::class, "store"])->name("login.store");
 });
 
 
 Route::group(["middleware" => ["auth"],], function () {
-    Route::get("/", function () {
-        return view("welcome");
-    })->name("home");
-
+    Route::get("/", [HomeController::class, "index"])->name("home");
 
     Route::get("all", function () {
-//        if (\Illuminate\Support\Facades\Gate::check("assign-role", [\App\Models\User::class])) {
         return view("pages.all");
-//        }
-
-    });
+    })->name("all");
 
 });
 
@@ -41,4 +34,4 @@ Route::get("security", function () {
     return abort(404);
 
 
-})->middleware("auth:admin")->name("security");
+})->middleware(["auth:admin", "role:super_admin"])->name("security");

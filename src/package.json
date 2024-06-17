@@ -12,7 +12,8 @@
         "vite": "^5.0"
     },
     "dependencies": {
+        "element-plus": "^2.7.5",
         "izitoast": "^1.4.0",
-        "vue": "^3.4.27"
+        "vue": "^3.4.29"
     }
 }

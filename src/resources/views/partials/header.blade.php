@@ -1,5 +1,5 @@
 <!doctype html>
-<html lang="uk" data-bs-theme="dark" class="dark">
+<html lang="uk" data-bs-theme="dark" >
 <head>
     <meta charset="UTF-8">
     <meta name="viewport"

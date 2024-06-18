@@ -4,11 +4,14 @@ window.axios = axios;
 window.axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
 
 import { createApp } from 'vue';
+const app = createApp({});
+
+import {permissionsMixin} from "./mixins/permission.js";
+app.mixin(permissionsMixin)
+
 import ElementPlus from 'element-plus';
 import 'element-plus/dist/index.css';
 import 'element-plus/theme-chalk/dark/css-vars.css';
-
-const app = createApp({});
 
 import {successNotify, errorNotify, infoNotify, warningNotify} from "./settings/notify.js";
 app.config.globalProperties.$successNotify = successNotify;
@@ -21,9 +24,11 @@ app.component("Test", Test);
 
 import Login from "./views/login/Login.vue";
 import LoginAdmin from "./views/login/LoginAdmin.vue";
+import Home from "./views/home/Home.vue";
 
 app.component("Login", Login);
 app.component("LoginAdmin", LoginAdmin);
+app.component("Home", Home);
 
 app.use(ElementPlus);
 app.mount("#app");

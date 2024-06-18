@@ -1,4 +1,4 @@
 @extends("templates.main")
 @section("content")
-    <Test/>
+    <Home :user="{{json_encode($user)}}" :olx_parser_route="{{ json_encode($olx_link) }}"/>
 @endsection

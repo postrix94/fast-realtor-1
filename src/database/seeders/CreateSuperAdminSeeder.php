@@ -32,6 +32,5 @@ class CreateSuperAdminSeeder extends Seeder
         Config::set("auth.defaults.guard", "admin");
 
         $user->assignRole(["name" => Config::get("super_admin.role_name")]);
-        $user->givePermissionTo($permissions);
     }
 }

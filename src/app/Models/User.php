@@ -35,7 +35,7 @@ class User extends Authenticatable
         'remember_token',
     ];
 
-    protected $with = ["roles:name", "permissions:name"];
+    protected $with = ["roles", "permissions"];
 
 
     /**

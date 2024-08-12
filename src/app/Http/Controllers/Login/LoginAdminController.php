@@ -26,7 +26,7 @@ class LoginAdminController extends Controller
             return response()->json(["message" => "Невірно введено логін або пароль"], 422);
         }
 
-        if(!Auth::guard("admin")->user()->hasRole(["admin"])) {
+        if(!Auth::guard("admin")->user()->hasRole(["admin", "super_admin"])) {
             $request->session()->invalidate();
             $request->session()->regenerateToken();
 

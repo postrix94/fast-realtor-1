@@ -24,8 +24,10 @@ class CreateRolesAndPermissionsSeeder extends Seeder
                 $this->guardByPermissions($permissions,$newRoleGuardWeb);
             }
 
-            $newRoleGuardAdmin = Role::create(['name' => $role, 'guard_name' => "admin"]);
-            $this->guardByPermissions($permissions, $newRoleGuardAdmin, "admin");
+            if (in_array($role, Config::get("permission.guard_by_roles.admin"))) {
+                $newRoleGuardAdmin = Role::create(['name' => $role, 'guard_name' => "admin"]);
+                $this->guardByPermissions($permissions, $newRoleGuardAdmin, "admin");
+            }
         }
     }
 

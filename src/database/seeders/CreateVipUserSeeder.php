@@ -20,7 +20,7 @@ class CreateVipUserSeeder extends Seeder
             "name" => "Vip User",
             'phone' => "0631234567",
             'is_blocked' => false,
-            'password' => "12345",
+            'password' => Hash::make("12345"),
             'created_at' => Carbon::now()->timestamp,
             'updated_at' => Carbon::now()->timestamp,
         ]);

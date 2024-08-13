@@ -2,16 +2,18 @@
 
 namespace App\Http\Controllers;
 
+use App\Modules\Client\DTO\ClientToArrayDTO;
+use App\Modules\Client\Service\ActionClient;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
-use Spatie\Permission\Models\Permission;
+
 
 class HomeController extends Controller
 {
-    public function index() {
+    public function index(ActionClient $client)
+    {
         return view("pages.home", [
             "title" => "Головна",
-            "user" => Auth::user(),
+            "user" => ClientToArrayDTO::toArray($client->auth()),
             "olx_link" => route("olx.parser"),
         ]);
     }

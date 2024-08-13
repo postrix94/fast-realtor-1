@@ -10,6 +10,7 @@
 
             <el-button @click.prevent="onClickBtnOlx" type="primary" size="default" class="w-100">Отримати</el-button>
 
+
             <div v-if="this.saveImages()" class="mt-3">
                 <el-checkbox v-model="isSaveImages" label="Зберегти фото" size="large" style="color: #ffffff"/>
             </div>
@@ -30,11 +31,12 @@ export default {
         olx_parser_route: {
             required: true,
             type: String,
-        }
+        },
+
     },
     data() {
         return {
-            olx: "",
+            olx: "https://www.olx.ua/d/uk/obyavlenie/2-k-kvartira-v-zhk-parus-z-meblyami-ta-o-za-vul-mazepi-IDRzrqc.html",
             isSaveImages: false,
             regexpOlxLink: new RegExp("^https?://(www|m).olx.ua[\\w\\W]+"),
         }
@@ -47,7 +49,10 @@ export default {
             //     return null;
             // }
 
-            axios.post(this.olx_parser_route, {olx_link:this.olx.trim()})
+
+            axios.post(this.olx_parser_route, {olx_link: this.olx.trim()})
+                .then(this.successResponse)
+                .catch(this.errorResponse);
 
         },
 
@@ -56,11 +61,15 @@ export default {
         },
 
         successResponse(response) {
-
+            console.log(response)
         },
 
         errorResponse(error) {
-
+            try {
+                this.$errorNotify(error.response.data.message);
+            } catch (e) {
+                this.$errorNotify("Помилка");
+            }
         },
 
 

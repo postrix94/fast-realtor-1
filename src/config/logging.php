@@ -127,6 +127,14 @@ return [
             'path' => storage_path('logs/laravel.log'),
         ],
 
+        'olx_request' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/olx_request/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('LOG_DAILY_DAYS', 31),
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

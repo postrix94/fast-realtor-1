@@ -4,11 +4,8 @@ const permissions = ["save images"];
 const permissionsMixin = {
     methods: {
         saveImages() {
-           if(!this.user || !this.user.permissions) {
-               return false;
-           }
-
-          return this.user.permissions.some(permission => permissions.includes(permission.name));
+            if (!this.user) return false;
+            return this.user.permissions.some(permission => permissions.includes(permission));
         },
     }
 }

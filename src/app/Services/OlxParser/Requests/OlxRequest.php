@@ -1,35 +1,37 @@
 <?php
 
-
 namespace App\Services\OlxParser\Requests;
 
-
+use App\Services\OlxParser\DTO\ResponseOlxDTO;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Http;
 use Illuminate\Support\Facades\Log;
+
+
 
 class OlxRequest
 {
     /**
      * @param string $url
-     * @return string|null
+     * @return ResponseOlxDTO
      */
-    public static function handle(string $url): string|null
+    public static function handle(string $url): ResponseOlxDTO
     {
         try {
-            $response = Http::withHeaders(static::headers())->asForm()->get($url);
+            $response = Http::withHeaders(self::headers())->asForm()->get($url);
 
-            if ($response->status() !== 200 || $response->body() !== "") {
-                return null;
+            if ($response->status() !== 200 || $response->body() === "") {
+                return new ResponseOlxDTO(statusCode: $response->status());
             }
 
         } catch (\Exception $e) {
             $info = ["link" => $url, "message" => $e->getMessage()];
             Log::channel("olx_request")->error(json_encode($info));
-            return null;
+
+            return new ResponseOlxDTO(statusCode: $e->getCode());
         }
 
-        return $response->body();
+        return new ResponseOlxDTO(html: $response->body(), statusCode: $response->status());
     }
 
     /**
@@ -37,8 +39,6 @@ class OlxRequest
      */
     private static function headers(): array
     {
-
-
         return [
             'authority' => 'www.olx.ua',
             'scheme' => 'https',
@@ -59,7 +59,8 @@ class OlxRequest
     /**
      * @return string
      */
-    private static function getUserAgent(): string {
+    private static function getUserAgent(): string
+    {
         $headers = Config::get('headers');
         $max = count($headers) - 1;
         $index = rand(0, $max);

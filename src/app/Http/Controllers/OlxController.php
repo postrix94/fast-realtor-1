@@ -1,17 +1,17 @@
 <?php
 
 namespace App\Http\Controllers;
-use App\Services\OlxParser\Requests\OlxRequest as OlxParser;
-
+use App\Services\OlxParser\OlxParserService;
 use App\Http\Requests\Olx\OlxRequest;
 use Illuminate\Http\Request;
 
 class OlxController extends Controller
 {
-    public function store(OlxRequest $request) {
+    public function store(OlxRequest $request, OlxParserService $olxParserService) {
 
-        $r = OlxParser::handle($request->get('olx_link'));
+        $olxParserService->getPublicLink($request->get('olx_link'));
 
-        dd($r);
+        return response()->json(['html' => 123434]);
+
     }
 }

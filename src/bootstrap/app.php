@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\OlxRequestException;
 use App\Http\Middleware\Auth\AuthMiddleware;
 use App\Http\Middleware\Guest\RedirectIfAuthenticated;
 use App\Http\Middleware\RoleAndPermission\CheckRoleMiddleware;
@@ -23,5 +24,7 @@ return Application::configure(basePath: dirname(__DIR__))
     ]);
 })
     ->withExceptions(function (Exceptions $exceptions) {
-        //
+        $exceptions->render(function (OlxRequestException $e) {
+            return response()->json(["message" => $e->getMessage()], 422);
+        });
     })->create();

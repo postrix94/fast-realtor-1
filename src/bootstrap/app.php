@@ -1,5 +1,6 @@
 <?php
 
+use App\Exceptions\CreateOlxAddException;
 use App\Exceptions\OlxRequestException;
 use App\Http\Middleware\Auth\AuthMiddleware;
 use App\Http\Middleware\Guest\RedirectIfAuthenticated;
@@ -25,6 +26,16 @@ return Application::configure(basePath: dirname(__DIR__))
 })
     ->withExceptions(function (Exceptions $exceptions) {
         $exceptions->render(function (OlxRequestException $e) {
-            return response()->json(["message" => $e->getMessage()], 422);
+            return response()->json(["message" => "Помилка:( - спробуйте ще раз"], 422);
         });
+
+        $exceptions->report(function (OlxRequestException $e) {
+            Log::channel("olx_request")->error($e->getMessage());
+            return false;
+        });
+
+        $exceptions->render(function (CreateOlxAddException $e) {
+            return response()->json(["message" => "Помилка:( - спробуйте ще раз"], 422);
+        });
+
     })->create();

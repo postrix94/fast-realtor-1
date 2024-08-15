@@ -4,12 +4,14 @@
 namespace App\Services\OlxParser\DTO;
 
 
+use Illuminate\Support\Str;
+
 class OlxCrawlerDTO
 {
     private const LENGTH_BODY = 30000;
     private const LENGTH_OLX_URL = 300;
 
-    private string $id;
+    private string $adsId;
     private string $title;
     private string $slug;
     private string $body;
@@ -22,17 +24,17 @@ class OlxCrawlerDTO
     /**
      * @return string
      */
-    public function getId(): string
+    public function getAdsId(): string
     {
-        return $this->id;
+        return $this->adsId;
     }
 
     /**
-     * @param string $id
+     * @param string $adsId
      */
-    public function setId(string $id): void
+    public function setAdsId(string $adsId): void
     {
-        $this->id = $this->lengthValidationValue($id);
+        $this->adsId = $this->lengthValidationValue($adsId);
     }
 
     /**
@@ -59,12 +61,15 @@ class OlxCrawlerDTO
         return $this->slug;
     }
 
+
     /**
-     * @param string $slug
+     * @return string
      */
-    public function setSlug(string $slug): void
+    public function createSlug(): string
     {
+        $slug = Str::slug($this->title . " " . Str::uuid() . $this->adsId);
         $this->slug = $this->lengthValidationValue($slug);
+        return $this->slug;
     }
 
     /**
@@ -116,11 +121,11 @@ class OlxCrawlerDTO
     }
 
     /**
-     * @return array
+     * @return string
      */
-    public function getInformationApartment(): array
+    public function getInformationApartment(): string
     {
-        return $this->informationApartment;
+        return implode(" | ", $this->informationApartment);
     }
 
     /**

@@ -10,4 +10,8 @@ class ImageOlx extends Model
     use HasFactory;
 
     protected $table = "images_olx";
+
+    protected $fillable = [
+        "link", "add_id"
+    ];
 }

@@ -61,7 +61,7 @@ class OlxDOMCrawler
             ? trim(explode(":", $addId->text(""))[1])
             : $addId->text("");
 
-        $this->olxCrawlerDTO->setId($adsId);
+        $this->olxCrawlerDTO->setAdsId($adsId);
 
 
         $this->olxCrawlerDTO->setImages($this->getImages());

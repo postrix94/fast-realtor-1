@@ -10,6 +10,12 @@ class OlxAdvertisement extends Model
 {
     use HasFactory;
 
+    protected $fillable = [
+        "title", "slug", "body", "price", "owner_name",
+        "information", "ad_id", "olx", "commentary",
+        "user_id",
+    ];
+
     protected $with = ["images"];
 
     /**

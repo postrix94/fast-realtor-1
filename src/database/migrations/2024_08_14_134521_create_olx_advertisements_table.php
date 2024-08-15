@@ -13,6 +13,16 @@ return new class extends Migration
     {
         Schema::create('olx_advertisements', function (Blueprint $table) {
             $table->id();
+            $table->tinyText("title")->nullable();
+            $table->string("slug", 255)->unique();
+            $table->text("body")->nullable();
+            $table->tinyText("price")->nullable();
+            $table->tinyText("owner_name")->nullable();
+            $table->tinyText("information")->nullable();
+            $table->tinyText("ad_id")->nullable();
+            $table->string("olx", 300);
+            $table->string("commentary", 500)->nullable();
+            $table->foreignId("user_id")->constrained("users")->cascadeOnDelete();
             $table->timestamps();
         });
     }

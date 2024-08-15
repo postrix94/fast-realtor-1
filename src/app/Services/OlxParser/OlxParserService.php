@@ -31,7 +31,7 @@ class OlxParserService
        }
 
        $olxDto = $this->crawler->parse($response);
-       $olxDto->olx = $url;
+       $olxDto->setOlx($this->removeQueryParams($url));
 
        dd($olxDto);
 

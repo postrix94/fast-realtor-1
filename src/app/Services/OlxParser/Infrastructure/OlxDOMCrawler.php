@@ -43,26 +43,28 @@ class OlxDOMCrawler
     private function getInformation(): void
     {
         $titleNode = $this->crawler->filter($this->selectors->cssClassHeader)->first();
-        $this->olxCrawlerDTO->title = $titleNode->text("");
+        $this->olxCrawlerDTO->setTitle($titleNode->text(""));
 
         $priceNode = $this->crawler->filter($this->selectors->cssClassPrice)->first();
-        $this->olxCrawlerDTO->price = $priceNode->text("");
+        $this->olxCrawlerDTO->setPrice($priceNode->text(""));
 
         $bodyNode = $this->crawler->filter($this->selectors->cssClassBody)->first();
-        $this->olxCrawlerDTO->body = $bodyNode->text("");
+        $this->olxCrawlerDTO->setBody($bodyNode->text(""));
 
         $ownerNode = $this->crawler->filter($this->selectors->cssOwnerName)->first();
-        $this->olxCrawlerDTO->ownerName = $ownerNode->text("No name");
+        $this->olxCrawlerDTO->setOwnerName($ownerNode->text("No name"));
 
-        $this->olxCrawlerDTO->informationApartment = $this->informationApartment();
+        $this->olxCrawlerDTO->setInformationApartment($this->informationApartment());
 
         $addId = $this->crawler->filter($this->selectors->cssClassAddId)->first();
-        $this->olxCrawlerDTO->id = $addId->text("")
+        $adsId = $addId->text("")
             ? trim(explode(":", $addId->text(""))[1])
             : $addId->text("");
 
+        $this->olxCrawlerDTO->setId($adsId);
 
-        $this->olxCrawlerDTO->images = $this->getImages();
+
+        $this->olxCrawlerDTO->setImages($this->getImages());
 
     }
 

@@ -135,6 +135,14 @@ return [
             'replace_placeholders' => true,
         ],
 
+        'create_ads' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/ads/laravel.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('LOG_DAILY_DAYS', 31),
+            'replace_placeholders' => true,
+        ],
+
     ],
 
 ];

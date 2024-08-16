@@ -10,7 +10,6 @@
 
             <el-button @click.prevent="onClickBtnOlx" type="primary" size="default" class="w-100">Отримати</el-button>
 
-
             <div v-if="this.saveImages()" class="mt-3">
                 <el-checkbox v-model="isSaveImages" label="Зберегти фото" size="large" style="color: #ffffff"/>
             </div>

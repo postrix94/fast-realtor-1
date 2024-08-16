@@ -8,6 +8,7 @@ use App\Models\User;
 use App\Modules\Client\Client;
 use App\Modules\Client\Infrastructure\Permission;
 use App\Modules\Client\Infrastructure\Role;
+use Illuminate\Support\Facades\Auth;
 
 trait CreateClient
 {
@@ -16,7 +17,7 @@ trait CreateClient
         $roles = $user->roles->map(fn($role) => $this->createRole($role));
         $permissions = $user->getPermissionsViaRoles()->map(fn($permission) => $this->createPermission($permission));
 
-        return new Client($user->id, $user->name, $user->phone, $user->is_blocked, $roles, $permissions);
+        return new Client($user->id, $user->name, $user->phone, $user->is_blocked, $roles, $permissions, Auth::check());
     }
 
     /**

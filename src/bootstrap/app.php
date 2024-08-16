@@ -38,4 +38,6 @@ return Application::configure(basePath: dirname(__DIR__))
             return response()->json(["message" => "Помилка:( - спробуйте ще раз"], 422);
         });
 
+        $exceptions->report(fn (CreateOlxAddException $e) => false);
+
     })->create();

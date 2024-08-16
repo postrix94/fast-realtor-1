@@ -65,7 +65,6 @@ class OlxDOMCrawler
 
 
         $this->olxCrawlerDTO->setImages($this->getImages());
-
     }
 
     /**

@@ -19,16 +19,15 @@ app.config.globalProperties.$errorNotify = errorNotify;
 app.config.globalProperties.$infoNotify = infoNotify;
 app.config.globalProperties.$warningNotify = warningNotify;
 
-import Test from "./components/Test.vue";
-app.component("Test", Test);
-
 import Login from "./views/login/Login.vue";
 import LoginAdmin from "./views/login/LoginAdmin.vue";
 import Home from "./views/home/Home.vue";
+import Ads from "./views/ads/Ads.vue";
 
 app.component("Login", Login);
 app.component("LoginAdmin", LoginAdmin);
 app.component("Home", Home);
+app.component("Ads", Ads);
 
 app.use(ElementPlus);
 app.mount("#app");

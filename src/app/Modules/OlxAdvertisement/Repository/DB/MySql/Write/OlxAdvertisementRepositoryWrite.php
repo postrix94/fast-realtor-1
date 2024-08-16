@@ -64,6 +64,7 @@ class OlxAdvertisementRepositoryWrite implements WriteOlxAdvertisement
 
         $olxAdvertisement->setId($ads->id);
         $olxAdvertisement->setUserId($ads->user_id);
+        $olxAdvertisement->setCreatedAt($ads->created_at);
 
         return $olxAdvertisement;
     }

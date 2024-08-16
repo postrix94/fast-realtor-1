@@ -5,7 +5,9 @@ namespace App\Providers;
 use App\Models\User;
 use App\Modules\Client\Repository\DB\MySQL\Read\ClientRepositoryRead;
 use App\Modules\Client\Repository\Interfaces\ReadClient;
+use App\Modules\OlxAdvertisement\Repository\DB\MySql\Read\OlxAdvertisementRepositoryRead;
 use App\Modules\OlxAdvertisement\Repository\DB\MySql\Write\OlxAdvertisementRepositoryWrite;
+use App\Modules\OlxAdvertisement\Repository\Interfaces\ReadOlxAdvertisement;
 use App\Modules\OlxAdvertisement\Repository\Interfaces\WriteOlxAdvertisement;
 use App\Policies\UserPolicy;
 use Illuminate\Support\Facades\Gate;
@@ -29,5 +31,6 @@ class AppServiceProvider extends ServiceProvider
         Gate::policy(User::class, UserPolicy::class);
         $this->app->bind(ReadClient::class, ClientRepositoryRead::class);
         $this->app->bind(WriteOlxAdvertisement::class, OlxAdvertisementRepositoryWrite::class);
+        $this->app->bind(ReadOlxAdvertisement::class, OlxAdvertisementRepositoryRead::class);
     }
 }

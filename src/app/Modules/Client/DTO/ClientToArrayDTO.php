@@ -21,6 +21,7 @@ final class ClientToArrayDTO
             "name" => $client->getName(),
             "phone" => $client->getPhone(),
             "is_blocked" => $client->isBlocked(),
+            "is_auth" => $client->isAuth(),
             "roles" => $roles,
             "permissions" => $permissions,
         ];

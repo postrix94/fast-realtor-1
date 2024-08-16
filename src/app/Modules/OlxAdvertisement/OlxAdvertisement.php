@@ -4,8 +4,9 @@
 namespace App\Modules\OlxAdvertisement;
 
 
-use Illuminate\Database\Eloquent\Collection;
-use Illuminate\Support\Facades\Config;
+use App\Modules\Client\Client;
+use Carbon\Carbon;
+use Illuminate\Support\Collection;
 
 class OlxAdvertisement
 {
@@ -18,9 +19,11 @@ class OlxAdvertisement
     private string $information;
     private string $adId;
     private string $olx;
-    private string $commentary;
+    private ?string $commentary;
     private ?int $userId;
     private Collection $images;
+    private ?string $created_at;
+    private ?Client $client;
 
 
     /**
@@ -33,15 +36,17 @@ class OlxAdvertisement
      * @param string $ownerName
      * @param string $information
      * @param string $adId
-     * @param string $commentary
+     * @param string|null $commentary
      * @param string $olx
      * @param Collection $images
      * @param int|null $userId
+     * @param string|null $created_at
+     * @param Client|null $client
      */
     public function __construct(int $id, string $title, string $slug, string $body,
                                 string $price, string $ownerName, string $information,
-                                string $adId, string $commentary, string $olx, Collection $images,
-                                ?int $userId = null
+                                string $adId, ?string $commentary, string $olx, Collection $images,
+                                int $userId = null, string $created_at = null, Client $client = null
     )
     {
         $this->id = $id;
@@ -56,15 +61,17 @@ class OlxAdvertisement
         $this->commentary = $commentary;
         $this->images = $images;
         $this->userId = $userId;
+        $this->created_at = $created_at;
+        $this->client = $client;
     }
+
 
     /**
      * @return string
      */
     public function publicLink(): string
     {
-        $url = Config::get("app.url") . "/test/" . $this->slug;
-        return $url;
+        return route("olx.adds.show", $this->slug);
     }
 
     /**
@@ -188,9 +195,9 @@ class OlxAdvertisement
     }
 
     /**
-     * @return string
+     * @return string|null
      */
-    public function getCommentary(): string
+    public function getCommentary(): string|null
     {
         return $this->commentary;
     }
@@ -225,6 +232,30 @@ class OlxAdvertisement
     public function setUserId(int $userId): void
     {
         $this->userId = $userId;
+    }
+
+    /**
+     * @return string
+     */
+    public function getCreatedAt(): string
+    {
+        return Carbon::createFromFormat('Y-m-d H:i:s', $this->created_at)->format('Y-m-d');
+    }
+
+    /**
+     * @param string $created_at
+     */
+    public function setCreatedAt(string $created_at): void
+    {
+        $this->created_at = $created_at;
+    }
+
+    /**
+     * @return Client
+     */
+    public function client(): Client
+    {
+        return $this->client;
     }
 
 }

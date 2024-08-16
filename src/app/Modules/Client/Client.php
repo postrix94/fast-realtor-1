@@ -12,8 +12,10 @@ class Client
     private string $name;
     private string $phone;
     private bool $isBlocked;
+    private bool $isAuth;
     private Collection $roles;
     private Collection $permissions;
+
 
     /**
      * Client constructor.
@@ -23,8 +25,9 @@ class Client
      * @param bool $isBlocked
      * @param Collection $roles
      * @param Collection $permissions
+     * @param bool $isAuth
      */
-    public function __construct(int $id, string $name, string $phone, bool $isBlocked, Collection $roles, Collection $permissions)
+    public function __construct(int $id, string $name, string $phone, bool $isBlocked, Collection $roles, Collection $permissions, bool $isAuth)
     {
         $this->id = $id;
         $this->name = $name;
@@ -32,7 +35,9 @@ class Client
         $this->isBlocked = $isBlocked;
         $this->roles = $roles;
         $this->permissions = $permissions;
+        $this->isAuth = $isAuth;
     }
+
 
     /**
      * @return int
@@ -88,6 +93,14 @@ class Client
     public function setIsBlocked(bool $isBlocked): void
     {
         $this->isBlocked = $isBlocked;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isAuth(): bool
+    {
+        return $this->isAuth;
     }
 
 

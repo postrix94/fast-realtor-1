@@ -3,7 +3,6 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
-use App\Modules\Client\Service\ActionClient;
 use App\Modules\OlxAdvertisement\DTO\OlxAdvertisementToArrayDTO;
 use App\Modules\OlxAdvertisement\Service\OlxAdvertisementService;
 use Illuminate\Http\Request;
@@ -31,7 +30,7 @@ class OlxAdvertisementController extends Controller
     public function edit(Request $request, string $slug, OlxAdvertisementService $olxAdvertisementService) {
         $ads = $olxAdvertisementService->find($slug);
 
-        if(is_null($ads) || !$olxAdvertisementService->isOwner($slug)) {
+        if(is_null($ads) || !$olxAdvertisementService->isOwner($ads)) {
             return abort(404);
         }
 

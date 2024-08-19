@@ -36,7 +36,7 @@ final class OlxAdvertisementToArrayDTO
             "created_at" => $ads->getCreatedAt(),
             "images" => $images,
             "user" => $client,
-            "is_owner" => $ads->is_owner,
+            "is_owner" => $ads->isOwner(),
         ];
     }
 }

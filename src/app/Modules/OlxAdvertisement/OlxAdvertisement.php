@@ -24,6 +24,7 @@ class OlxAdvertisement
     private Collection $images;
     private ?string $created_at;
     private ?Client $client;
+    private bool $isOwner;
 
 
     /**
@@ -258,4 +259,19 @@ class OlxAdvertisement
         return $this->client;
     }
 
+    /**
+     * @return bool
+     */
+    public function isOwner(): bool
+    {
+        return $this->isOwner;
+    }
+
+    /**
+     * @param bool $isOwner
+     */
+    public function setIsOwner(bool $isOwner): void
+    {
+        $this->isOwner = $isOwner;
+    }
 }

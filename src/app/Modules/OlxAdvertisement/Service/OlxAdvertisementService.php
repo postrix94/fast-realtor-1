@@ -44,16 +44,16 @@ class OlxAdvertisementService
         $this->actionClientService = $actionClientService;
     }
 
+
     /**
-     * @param string $slug
+     * @param OlxAdvertisement $ads
      * @return bool
      */
-    public function isOwner(string $slug): bool
+    public function isOwner(OlxAdvertisement $ads): bool
     {
         if(is_null($this->actionClientService->auth())) return false;
 
-        dd($this->find($slug));
-        return $this->find($slug)->client()->getId() === $this->actionClientService->auth()->getId();
+        return$ads->client()->getId() === $this->actionClientService->auth()->getId();
     }
 
     /**
@@ -65,10 +65,7 @@ class OlxAdvertisementService
         $ads = $this->readOlxAdvertisementRepository->get($slug);
         if(is_null($ads)) return null;
 
-        $ads->is_owner = $this->isOwner($slug);
-
-        dd($ads);
-
+        $ads->setIsOwner($this->isOwner($ads));
 
         return $ads;
 

@@ -23,6 +23,7 @@ Route::group(["middleware" => ["auth"],], function () {
     Route::post("olx-parser", [OlxController::class, "store"])->name("olx.parser");
 
     Route::get("olx/adds/{slug}/edit", [OlxAdvertisementController::class, "edit"])->name("olx.adds.edit");
+    Route::post("olx/adds/{slug}/edit", [OlxAdvertisementController::class, "update"])->name("olx.adds.update");
 
     Route::get("all", function () {
         return view("pages.all");

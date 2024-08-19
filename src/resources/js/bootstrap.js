@@ -23,11 +23,13 @@ import Login from "./views/login/Login.vue";
 import LoginAdmin from "./views/login/LoginAdmin.vue";
 import Home from "./views/home/Home.vue";
 import Ads from "./views/ads/Ads.vue";
+import AdsEdit from "./views/ads/AdsEdit.vue";
 
 app.component("Login", Login);
 app.component("LoginAdmin", LoginAdmin);
 app.component("Home", Home);
 app.component("Ads", Ads);
+app.component("AdsEdit", AdsEdit);
 
 app.use(ElementPlus);
 app.mount("#app");

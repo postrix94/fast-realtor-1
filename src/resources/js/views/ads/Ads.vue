@@ -7,7 +7,6 @@
                         <h4>{{ads.title}}</h4>
                         <p class="d-flex justify-content-between align-items-center" style="margin-top: 20px;">
                             <small><b>{{ads.created_at}}</b></small>
-                            {{}}
                             <a v-if="(ads.user.is_auth && ads.is_owner)" target="_blank" :href="url" class="btn-sm btn btn-outline-light">EDIT</a>
                         </p>
                     </div>

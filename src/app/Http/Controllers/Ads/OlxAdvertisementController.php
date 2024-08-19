@@ -34,7 +34,15 @@ class OlxAdvertisementController extends Controller
             return abort(404);
         }
 
+        return view("pages.ads.ads_edit", [
+            "title" => $ads->getTitle(),
+            "ads" => OlxAdvertisementToArrayDTO::toArray($ads),
+            "url" => route("olx.adds.update", ["slug" => $slug]),
+            "public_url_ads" => route("olx.adds.show", ["slug" => $slug]),
+        ]);
+    }
 
-        return view("pages.ads.ads_edit");
+    public function update(Request $request, string $slug, OlxAdvertisementService $olxAdvertisementService) {
+
     }
 }

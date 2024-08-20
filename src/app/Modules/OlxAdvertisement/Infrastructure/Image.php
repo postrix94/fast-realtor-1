@@ -4,6 +4,8 @@
 namespace App\Modules\OlxAdvertisement\Infrastructure;
 
 
+use Illuminate\Database\Eloquent\Collection;
+
 class Image
 {
     private ?int $id;
@@ -69,6 +71,10 @@ class Image
     public function setAddId(int $add_id): void
     {
         $this->add_id = $add_id;
+    }
+
+    public function diff(Collection $newImages) {
+
     }
 
 

@@ -4,8 +4,6 @@
 namespace App\Services\OlxParser\DTO;
 
 
-use Illuminate\Support\Str;
-
 class OlxCrawlerDTO
 {
     private const LENGTH_BODY = 30000;
@@ -61,16 +59,14 @@ class OlxCrawlerDTO
         return $this->slug;
     }
 
-
     /**
-     * @return string
+     * @param string $slug
      */
-    public function createSlug(): string
+    public function setSlug(string $slug): void
     {
-        $slug = Str::slug($this->title . " " . Str::uuid() . $this->adsId);
-        $this->slug = $this->lengthValidationValue($slug);
-        return $this->slug;
+        $this->slug = $slug;
     }
+
 
     /**
      * @return string

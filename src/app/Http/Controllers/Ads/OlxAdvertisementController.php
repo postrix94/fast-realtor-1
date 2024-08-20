@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
+use App\Http\Requests\Ads\AdsUpdateRequest;
 use App\Modules\OlxAdvertisement\DTO\OlxAdvertisementToArrayDTO;
 use App\Modules\OlxAdvertisement\Service\OlxAdvertisementService;
 use Illuminate\Http\Request;
@@ -42,7 +43,17 @@ class OlxAdvertisementController extends Controller
         ]);
     }
 
-    public function update(Request $request, string $slug, OlxAdvertisementService $olxAdvertisementService) {
+    public function update(AdsUpdateRequest $request, string $slug, OlxAdvertisementService $olxAdvertisementService) {
+        $ads = $olxAdvertisementService->find($slug);
 
+        if(is_null($ads) || !$olxAdvertisementService->isOwner($ads)) {
+            return response()->json(["message" => "не можливо редагувати оголошення"], 422);
+        }
+
+        $data = $request->only(["title", "body", "price", "commentary", "images"]);
+
+        return $olxAdvertisementService->update($ads, $data)
+            ? response()->json(["message" => "OK"])
+            : response()->json(["message" => "не вдалося оновити оголошення"], 500);
     }
 }

@@ -22,8 +22,10 @@ Route::group(["middleware" => ["auth"],], function () {
     Route::get("/", [HomeController::class, "index"])->name("home");
     Route::post("olx-parser", [OlxController::class, "store"])->name("olx.parser");
 
-    Route::get("olx/adds/{slug}/edit", [OlxAdvertisementController::class, "edit"])->name("olx.adds.edit");
-    Route::post("olx/adds/{slug}/edit", [OlxAdvertisementController::class, "update"])->name("olx.adds.update");
+    Route::prefix("olx")->name("olx.")->group(function () {
+        Route::get("adds/{slug}/edit", [OlxAdvertisementController::class, "edit"])->name("adds.edit");
+        Route::post("adds/{slug}/edit", [OlxAdvertisementController::class, "update"])->name("adds.update");
+    });
 
     Route::get("all", function () {
         return view("pages.all");

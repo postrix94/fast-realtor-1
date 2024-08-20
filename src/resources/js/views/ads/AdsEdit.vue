@@ -1,5 +1,5 @@
 <template>
-    <div class="wrapper">
+    <div class="wrapper" v-loading="showLoader" element-loading-background="rgba(122, 122, 122, 0.8)">
         <el-form label-width="auto">
             <el-form-item>
                 <el-input v-model="title"/>
@@ -47,7 +47,8 @@
                 </div>
 
                 <el-form-item>
-                    <el-button :style="'margin-left: auto'" type="success">редагувати</el-button>
+                    <el-button @click.prevent="onClickBtnEdit" :style="'margin-left: auto'" type="success">редагувати
+                    </el-button>
                 </el-form-item>
             </div>
 
@@ -69,9 +70,8 @@
                 </div>
             </div>
 
-
             <el-form-item>
-                <el-button :style="'margin: auto'" type="success">редагувати</el-button>
+                <el-button @click.prevent="onClickBtnEdit" :style="'margin: auto'" type="success">редагувати</el-button>
             </el-form-item>
 
         </el-form>
@@ -79,6 +79,8 @@
 </template>
 
 <script>
+
+
 export default {
     name: "AdsEdit",
     props: {
@@ -103,12 +105,20 @@ export default {
             body: "",
             price: "",
             comment: "",
+            showLoader: false,
+            validation: {
+                title: {max_length: 70, min_length: 5},
+                body: {max_length: 25000,},
+                price: {max_length: 30},
+                comment: {max_length: 500},
+            }
         }
     },
     mounted() {
         this.title = this.ads.title;
         this.body = this.ads.body;
         this.price = this.ads.price;
+        this.comment = this.ads.commentary;
     },
     methods: {
         removeImage(id) {
@@ -119,7 +129,59 @@ export default {
             imageContainerEl.remove();
 
             this.ads.images = this.ads.images.filter((img) => img.id !== id);
-        }
+        },
+
+        inputsValidation() {
+            switch (true) {
+                case this.title.length < this.validation.title.min_length:
+                    this.$warningNotify(`Заголовок мінімум ${this.validation.title.min_length} символів - зараз ${this.title.length}`);
+                    return false;
+                case this.title.length > this.validation.title.max_length:
+                    this.$warningNotify(`Заголовок максимум ${this.validation.title.max_length} символів - зараз ${this.title.length}`);
+                    return false;
+                case this.body.length > this.validation.body.max_length:
+                    this.$warningNotify(`Опис максимум ${this.validation.body.max_length} символів - зараз ${this.body.length}`);
+                    return false;
+                case this.price.length > this.validation.price.max_length:
+                    this.$warningNotify(`Ціна максимум ${this.validation.price.max_length} символів - зараз ${this.price.length}`);
+                    return false;
+                case this.comment !== null && this.comment.length > this.validation.comment.max_length:
+                    this.$warningNotify(`Коментарій максимум ${this.validation.comment.max_length} символів - зараз ${this.comment.length}`);
+                    return false;
+            }
+
+            return true;
+        },
+
+        onClickBtnEdit() {
+            if (!this.inputsValidation()) return;
+            this.showLoader = !this.showLoader;
+
+            const data = {
+                id: this.ads.id,
+                title: this.title,
+                body: this.body,
+                price: this.price,
+                commentary: this.comment,
+                images: this.ads.images
+            };
+
+            axios.post(this.url, data)
+                .then(this.successResponse)
+                .catch(this.errorResponse)
+                .finally(() => this.showLoader = !this.showLoader);
+        },
+
+        successResponse(response) {
+            const message = response.data.message;
+            this.$successNotify(message);
+        },
+
+        errorResponse(error) {
+            const message = error.response ? error.response.data.message : "Помилка";
+            this.$warningNotify(message);
+        },
+
     }
 }
 </script>

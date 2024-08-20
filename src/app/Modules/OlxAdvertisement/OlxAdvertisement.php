@@ -116,6 +116,15 @@ class OlxAdvertisement
     }
 
     /**
+     * @param string $slug
+     */
+    public function setSlug(string $slug): void
+    {
+        $this->slug = $slug;
+    }
+
+
+    /**
      * @return string
      */
     public function getBody(): string
@@ -204,9 +213,9 @@ class OlxAdvertisement
     }
 
     /**
-     * @param string $commentary
+     * @param string|null $commentary
      */
-    public function setCommentary(string $commentary): void
+    public function setCommentary(?string $commentary): void
     {
         $this->commentary = $commentary;
     }
@@ -217,6 +226,14 @@ class OlxAdvertisement
     public function getImages(): Collection
     {
         return $this->images;
+    }
+
+    /**
+     * @param Collection $images
+     */
+    public function setImages(Collection $images): void
+    {
+        $this->images = $images;
     }
 
     /**
@@ -266,6 +283,7 @@ class OlxAdvertisement
     {
         return $this->isOwner;
     }
+
 
     /**
      * @param bool $isOwner

@@ -137,7 +137,15 @@ return [
 
         'create_ads' => [
             'driver' => 'daily',
-            'path' => storage_path('logs/ads/laravel.log'),
+            'path' => storage_path('logs/ads/create.log'),
+            'level' => env('LOG_LEVEL', 'debug'),
+            'days' => env('LOG_DAILY_DAYS', 31),
+            'replace_placeholders' => true,
+        ],
+
+        'update_ads' => [
+            'driver' => 'daily',
+            'path' => storage_path('logs/ads/update.log'),
             'level' => env('LOG_LEVEL', 'debug'),
             'days' => env('LOG_DAILY_DAYS', 31),
             'replace_placeholders' => true,

@@ -25,4 +25,8 @@ class ActionClient
     {
         return $this->clientRepositoryRead->auth();
     }
+
+    public function ads() {
+
+    }
 }

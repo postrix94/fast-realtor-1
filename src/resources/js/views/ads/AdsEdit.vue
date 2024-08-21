@@ -1,5 +1,7 @@
 <template>
-    <div class="wrapper" v-loading="showLoader" element-loading-background="rgba(122, 122, 122, 0.8)">
+    <Menu/>
+
+    <div class="wrapper mt-100" v-loading="showLoader" element-loading-background="rgba(122, 122, 122, 0.8)">
         <el-form label-width="auto">
             <el-form-item>
                 <el-input v-model="title"/>
@@ -39,11 +41,17 @@
 
             <div class="d-flex justify-content-between align-items-baseline">
                 <div>
-                    <strong>
-                        <a :href="public_url_ads" class="fs-6"
-                           style="cursor: pointer; text-decoration:none; color: lightgray">до
-                            оголошення</a>
-                    </strong>
+                    <a :href="public_url_ads" class="fs-6"
+                       style="cursor: pointer; text-decoration:none; color: lightgray">
+                        <strong><small>до оголошення</small></strong>
+                    </a>
+                </div>
+
+                <div>
+                    <a :href="'/'" class="fs-6"
+                       style="cursor: pointer; text-decoration:none; color: lightgray">
+                        <strong><small>на головну</small></strong>
+                    </a>
                 </div>
 
                 <el-form-item>
@@ -81,8 +89,11 @@
 <script>
 
 
+import Menu from "../../components/navigation/Menu.vue";
+
 export default {
     name: "AdsEdit",
+    components: {Menu},
     props: {
         url: {
             required: true,
@@ -200,5 +211,9 @@ export default {
     justify-content: center;
     margin-bottom: 4%;
 
+}
+
+.mt-100 {
+    margin-top: 100px;
 }
 </style>

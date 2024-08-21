@@ -22,4 +22,8 @@ class ClientRepositoryRead implements ReadClient
     {
         return Auth::check() ? $this->createClient(Auth::user()) : null;
     }
+
+    public function ads() {
+
+    }
 }

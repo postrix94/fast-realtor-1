@@ -12,6 +12,10 @@ use Illuminate\Support\Facades\Auth;
 
 trait CreateClient
 {
+    /**
+     * @param User $user
+     * @return Client
+     */
     private function createClient(User $user): Client
     {
         $roles = $user->roles->map(fn($role) => $this->createRole($role));

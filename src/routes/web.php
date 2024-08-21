@@ -4,6 +4,8 @@ use App\Http\Controllers\Ads\OlxAdvertisementController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Login\LoginAdminController;
 use App\Http\Controllers\Login\LoginController;
+use App\Http\Controllers\Logout\LogoutController;
+use App\Http\Controllers\Menu\MenuController;
 use App\Http\Controllers\Olx\OlxController;
 use Illuminate\Support\Facades\Route;
 
@@ -19,12 +21,16 @@ Route::name("admin.")->prefix("admin")->middleware(["guest:admin"])->group(funct
 
 
 Route::group(["middleware" => ["auth"],], function () {
+    Route::post("menu", MenuController::class);
+    Route::post("logout", [LogoutController::class, "logout"])->name("logout");
+
     Route::get("/", [HomeController::class, "index"])->name("home");
     Route::post("olx-parser", [OlxController::class, "store"])->name("olx.parser");
 
     Route::prefix("olx")->name("olx.")->group(function () {
-        Route::get("adds/{slug}/edit", [OlxAdvertisementController::class, "edit"])->name("adds.edit");
-        Route::post("adds/{slug}/edit", [OlxAdvertisementController::class, "update"])->name("adds.update");
+        Route::get("ads", [OlxAdvertisementController::class, "all"])->name("ads.all");
+        Route::get("ads/{slug}/edit", [OlxAdvertisementController::class, "edit"])->name("ads.edit");
+        Route::post("ads/{slug}/edit", [OlxAdvertisementController::class, "update"])->name("ads.update");
     });
 
     Route::get("all", function () {
@@ -33,7 +39,7 @@ Route::group(["middleware" => ["auth"],], function () {
 
 });
 
-Route::get("olx/adds/{slug}", [OlxAdvertisementController::class, "index"])->name("olx.adds.show");
+Route::get("olx/adds/{slug}", [OlxAdvertisementController::class, "index"])->name("olx.ads.show");
 
 Route::get("security", function () {
 
@@ -45,3 +51,5 @@ Route::get("security", function () {
 
 
 })->middleware(["auth:admin", "role:super_admin"])->name("security");
+
+Route::fallback(fn() => abort(404));

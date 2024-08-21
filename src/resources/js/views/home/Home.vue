@@ -1,5 +1,7 @@
 <template>
-    <div v-loading="loading" element-loading-background="rgba(122, 122, 122, 0.9)" class="mt-5 d-flex justify-content-center">
+    <Navigation/>
+
+    <div v-loading="loading" element-loading-background="rgba(122, 122, 122, 0.9)" class="mt-100 d-flex justify-content-center">
         <div class="col-12 col-md-8">
             <el-input
                 v-model="olx"
@@ -95,4 +97,9 @@ export default {
     a {
         text-decoration: none;
     }
+
+    .mt-100 {
+        margin-top: 100px;
+    }
+
 </style>

@@ -31,7 +31,10 @@
                                 <a :href="ads.olx" target="_blank">olx - {{ ads.owner_name }}</a>
                             </el-tag>
                         </div>
+                    </div>
 
+                    <div>
+                        <DeleteAdsButton @deleteAds="removeAds" :ads="ads"/>
                     </div>
                 </div>
 
@@ -90,10 +93,11 @@
 
 
 import Menu from "../../components/navigation/Menu.vue";
+import DeleteAdsButton from "../../components/buttons/DeleteAdsButton.vue";
 
 export default {
     name: "AdsEdit",
-    components: {Menu},
+    components: {Menu,DeleteAdsButton},
     props: {
         url: {
             required: true,
@@ -181,6 +185,10 @@ export default {
                 .then(this.successResponse)
                 .catch(this.errorResponse)
                 .finally(() => this.showLoader = !this.showLoader);
+        },
+
+        removeAds() {
+            window.location.href = "/";
         },
 
         successResponse(response) {

@@ -1,4 +1,5 @@
 <template>
+
     <Menu/>
 
     <div class="mt-100 mb-5">
@@ -6,7 +7,7 @@
             <el-input v-model="search" size="small" placeholder="Пошук"/>
         </div>
 
-        <el-table :data="tableData" stripe style="max-width: 100%">
+        <el-table v-loading="loading" :data="this.tableData" stripe style="max-width: 100%">
 
             <el-table-column label="Оголошення" align="center">
                 <template #default="scope">
@@ -29,69 +30,78 @@
                              <a :href="scope.row.olx" target="_blank"><strong>olx</strong></a>
                         </el-tag>
 
-                        <el-button size="small" type="danger">Delete</el-button>
-
+                        <DeleteAdsButton @deleteAds="removeAds" :ads="scope.row"/>
                     </span>
                     </div>
                 </template>
             </el-table-column>
-
         </el-table>
 
-        <div class="d-flex justify-content-center mt-5">
-            <el-pagination
-                :page-sizes="pageSizes"
-                :default-page-size="pageSize"
-                layout="sizes, prev, pager, next"
-                :total="tableData.length"
-                :small="true"
-                @current-change="handleCurrentChange"
-                @size-change="handlePageSize"
-                @next-click="nextClick"
-            />
-        </div>
+        <MainPagination @getRecords="getAds" :pagination="pagination" :totalRecords="totalRecords"/>
     </div>
-
-
 </template>
 
 <script>
 import Menu from "../../components/navigation/Menu.vue";
+import DeleteAdsButton from "../../components/buttons/DeleteAdsButton.vue";
+import MainPagination from "../../components/pagination/MainPagination.vue";
 
 
 export default {
     name: "AdsAll",
-    components: {Menu},
-
+    components: {MainPagination, DeleteAdsButton, Menu},
     props: {
-        ads: {
-            required: true,
-            type: Object,
+        url: {
+            require: true,
+            type: String,
+        }
+    },
+    data() {
+        return {
+            loading: true,
+            tableData: [],
+            totalRecords: 0,
+            search: null,
+            pagination: {
+                pageSize: 15,
+                pageSizes: [10, 15, 30, 50, 100],
+                currentPage: 1,
+                limit: 15,
+                offset: 0,
+            },
         }
     },
 
-    data() {
-        return {
-            tableData: this.ads,
-            search: null,
-            background: true,
-            pageSize: 2,
-            pageSizes: [1, 2, 3, 4, 15, 30, 50, 100],
-            currentPage: 1,
-        }
+    mounted() {
+        this.getAds();
     },
 
     methods: {
-        handleCurrentChange(page)
-        {
-            this.currenPage = page;
-        },
-        handlePageSize(number) {
-            this.pageSize = number;
+        getAds() {
+            this.loading = true;
+
+            axios.post(this.url, {limit: this.pagination.limit, offset: this.pagination.offset})
+                .then(this.successResponse)
+                .catch(this.errorResponse)
+                .finally(() => this.loading = false);
         },
 
-        nextClick(page) {
-            this.currentPage = page;
+        removeAds(id) {
+            this.tableData.forEach((ads, index) => {
+                if (ads.id === id) {
+                    this.tableData.splice(index, 1);
+                }
+            });
+        },
+
+        successResponse(response) {
+            this.tableData = response.data.ads.ads;
+            this.totalRecords = response.data.ads.totalRecords
+        },
+
+        errorResponse(error) {
+            const message = error.response ? error.response.data.message : "Помилка";
+            this.$errorNotify(message);
         }
     }
 }

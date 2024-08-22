@@ -72,7 +72,7 @@ class OlxAdvertisement
      */
     public function publicLink(): string
     {
-        return route("olx.adds.show", $this->slug);
+        return route("olx.ads.show", $this->slug);
     }
 
     /**

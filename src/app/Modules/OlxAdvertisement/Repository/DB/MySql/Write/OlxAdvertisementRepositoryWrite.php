@@ -88,7 +88,7 @@ class OlxAdvertisementRepositoryWrite implements WriteOlxAdvertisement
             $removeImages = $olxAdvertisement->getImages()
                 ->map(fn($img) => ['link' => $img->getLink(), 'add_id' => $adsModel->id, "id" => $img->getId()]);
 
-            $removeImages = $adsModel->images->filter(fn($img) => !$removeImages->firstWhere("id","=", $img->id));
+            $removeImages = $adsModel->images->filter(fn($img) => !$removeImages->firstWhere("id", "=", $img->id));
             $adsModel->images()->whereIn("id", $removeImages->pluck("id"))->delete();
 
             $adsModel->save();
@@ -96,6 +96,26 @@ class OlxAdvertisementRepositoryWrite implements WriteOlxAdvertisement
         } catch (\Exception $e) {
             DB::rollBack();
             Log::channel("update_ads")->error("Не удалось обновить объявление ID: {$olxAdvertisement->getId()}");
+            return false;
+        }
+
+        return true;
+    }
+
+    /**
+     * @param int $id
+     * @return bool
+     * @throws \Throwable
+     */
+    public function delete(int $id): bool
+    {
+        try {
+            DB::beginTransaction();
+            $this->newQuery()->find($id)->delete();
+            DB::commit();;
+        } catch (\Exception $e) {
+            DB::rollBack();
+            Log::error("Не удалось удалить объявление ID: {$id}");
             return false;
         }
 

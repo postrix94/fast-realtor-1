@@ -94,6 +94,14 @@ class OlxAdvertisementService
     }
 
     /**
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id):bool {
+        return $this->writeOlxAdvertisementRepository->delete($id);
+    }
+
+    /**
      * @param OlxCrawlerDTO $olxDTO
      * @return OlxAdvertisement|false
      */

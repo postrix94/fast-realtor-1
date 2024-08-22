@@ -37,7 +37,8 @@ trait CreateClient
      * @param \Spatie\Permission\Models\Permission $permission
      * @return Permission
      */
-    private function createPermission(\Spatie\Permission\Models\Permission $permission): Permission {
+    private function createPermission(\Spatie\Permission\Models\Permission $permission): Permission
+    {
         return new Permission($permission->name, $permission->guard_name);
     }
 }

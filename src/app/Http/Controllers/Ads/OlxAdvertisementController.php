@@ -4,6 +4,7 @@ namespace App\Http\Controllers\Ads;
 
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdsUpdateRequest;
+use App\Modules\Client\DTO\AdsPaginationDTO;
 use App\Modules\Client\Service\ActionClient;
 use App\Modules\OlxAdvertisement\DTO\OlxAdvertisementToArrayDTO;
 use App\Modules\OlxAdvertisement\Service\OlxAdvertisementService;
@@ -31,19 +32,19 @@ class OlxAdvertisementController extends Controller
             ]);
     }
 
-    public function all(Request $request, ActionClient $client)
+    public function all(Request $request)
     {
-        $ads = Auth::user()->adds()->orderBy("created_at", "DESC")->get()->map(function ($value) {
-            $value->public_url_ads = route("olx.ads.show", ["slug" => $value->slug]);
-            $value->edit_url_ads = route("olx.ads.edit", ["slug" => $value->slug]);
-            $date = Carbon::createFromFormat('Y-m-d H:i:s', $value->created_at)->format('Y-m-d');
+        return view("pages.ads.ads_all", ["title" => "Мої оголошення", "url" => route("olx.get.ads")]);
+    }
 
-            $value->created = $date;
+    public function getAds(Request $request, ActionClient $client) {
+        $limit = $request->get("limit", 15);
+        $offset = $request->get("offset", 0);
 
-            return $value;
-        });
+        $paginateDTO = new AdsPaginationDTO($limit, $offset);
+        $ads = $client->ads($paginateDTO);
 
-        return view("pages.ads.ads_all", ["title" => "Мої оголошення", "ads" => $ads]);
+        return response()->json(["ads" => $ads]);
     }
 
     public function edit(Request $request, string $slug, OlxAdvertisementService $olxAdvertisementService)
@@ -75,5 +76,17 @@ class OlxAdvertisementController extends Controller
         return $olxAdvertisementService->update($ads, $data)
             ? response()->json(["message" => "OK"])
             : response()->json(["message" => "не вдалося оновити оголошення"], 500);
+    }
+
+    public function delete(Request $request, string $slug, OlxAdvertisementService $olxAdvertisementService) {
+        $ads = $olxAdvertisementService->find($slug);
+
+        if (is_null($ads) || !$olxAdvertisementService->isOwner($ads)) {
+            return response()->json(["message" => "не можливо видалити оголошення"], 422);
+        }
+
+        return $olxAdvertisementService->delete($ads->getId())
+            ? response()->json(["message" => "OK", "id" => $ads->getId()])
+            : response()->json(["message" => "не вдалося видалити оголошення"], 500);
     }
 }

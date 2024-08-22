@@ -21,4 +21,10 @@ interface WriteOlxAdvertisement
      * @return bool
      */
     public function update(OlxAdvertisement $olxAdvertisement): bool;
+
+    /**
+     * @param int $id
+     * @return bool
+     */
+    public function delete(int $id): bool;
 }

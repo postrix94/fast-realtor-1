@@ -3,6 +3,8 @@
 namespace App\Modules\Client\Service;
 
 use App\Modules\Client\Client;
+use App\Modules\Client\DTO\AdsPaginationDTO;
+use App\Modules\Client\DTO\ClientAdsToArrayDTO;
 use App\Modules\Client\Repository\Interfaces\ReadClient;
 
 class ActionClient
@@ -26,7 +28,17 @@ class ActionClient
         return $this->clientRepositoryRead->auth();
     }
 
-    public function ads() {
+    /**
+     * @param AdsPaginationDTO $paginationDTO
+     * @return array
+     */
+    public function ads(AdsPaginationDTO $paginationDTO): array
+    {
+        $result = $this->clientRepositoryRead->ads($paginationDTO);
 
+        return [
+            "ads" => ClientAdsToArrayDTO::handle($result),
+            "totalRecords" => $result->totalRecords,
+        ];
     }
 }

@@ -18,19 +18,19 @@
 
                     <div class="mt-4">
                         <span class="information tag-information" v-for="tag in this.splitTextInformation()">
-                            <el-tag type="primary" effect="dark" size="default">
+                            <el-tag type="primary" effect="dark" size="small">
                                 <strong>{{ tag }}</strong>
                             </el-tag>
                         </span>
                     </div>
 
                     <div class="information mt-3">
-                        <el-tag type="success" effect="dark" size="default"><strong>Ціна {{ ads.price }}</strong>
+                        <el-tag type="success" effect="dark" size="small"><strong>Ціна {{ ads.price }}</strong>
                         </el-tag>
                     </div>
 
                     <div class="contact">
-                        <el-tag type="success" effect="dark" size="default">
+                        <el-tag type="success" effect="dark" size="small">
                             <a class="contact" :href="'tel:' + ads.user.phone">
                                 <strong>{{ ads.user.phone }} - {{ ads.user.name }}</strong>
                             </a>

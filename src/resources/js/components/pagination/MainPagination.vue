@@ -1,5 +1,5 @@
 <template>
-    <div class="d-flex justify-content-center mt-5">
+    <div v-if="pagination.show" class="d-flex justify-content-center mt-5">
         <el-pagination
             :page-sizes="pagination.pageSizes"
             :default-page-size="pagination.pageSize"

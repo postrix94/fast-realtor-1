@@ -34,7 +34,7 @@
                     </div>
 
                     <div>
-                        <DeleteAdsButton @deleteAds="removeAds" :ads="ads"/>
+                        <DeleteAdsButton @deleteAds="removeAds" :ads="ads" :urlOlxAdsPrefix="urlOlxAdsPrefix"/>
                     </div>
                 </div>
 
@@ -44,7 +44,7 @@
 
             <div class="d-flex justify-content-between align-items-baseline">
                 <div>
-                    <a :href="public_url_ads" class="fs-6"
+                    <a :href="`${urlOlxAdsPrefix}/${ads.slug}`" class="fs-6"
                        style="cursor: pointer; text-decoration:none; color: lightgray">
                         <strong><small>до оголошення</small></strong>
                     </a>
@@ -58,7 +58,8 @@
                 </div>
 
                 <el-form-item>
-                    <el-button @click.prevent="onClickBtnEdit" :style="'margin-left: auto'" type="success">редагувати
+                    <el-button @click.prevent="onClickBtnUpdate" size="small" :style="'margin-left: auto'"
+                               type="success">редагувати
                     </el-button>
                 </el-form-item>
             </div>
@@ -82,7 +83,9 @@
             </div>
 
             <el-form-item>
-                <el-button @click.prevent="onClickBtnEdit" :style="'margin: auto'" type="success">редагувати</el-button>
+                <el-button @click.prevent="onClickBtnUpdate" size="small" :style="'margin: auto'" type="success">
+                    редагувати
+                </el-button>
             </el-form-item>
 
         </el-form>
@@ -97,18 +100,14 @@ import DeleteAdsButton from "../../components/buttons/DeleteAdsButton.vue";
 
 export default {
     name: "AdsEdit",
-    components: {Menu,DeleteAdsButton},
+    components: {Menu, DeleteAdsButton},
     props: {
-        url: {
-            required: true,
-            type: String,
-        },
         ads: {
             required: true,
             type: Object,
         },
 
-        public_url_ads: {
+        urlOlxAdsPrefix: {
             required: true,
             type: String,
         }
@@ -168,7 +167,7 @@ export default {
             return true;
         },
 
-        onClickBtnEdit() {
+        onClickBtnUpdate() {
             if (!this.inputsValidation()) return;
             this.showLoader = !this.showLoader;
 
@@ -181,14 +180,16 @@ export default {
                 images: this.ads.images
             };
 
-            axios.post(this.url, data)
+            const url = `${this.urlOlxAdsPrefix}/${this.ads.slug}/update`;
+
+            axios.post(url, data)
                 .then(this.successResponse)
                 .catch(this.errorResponse)
                 .finally(() => this.showLoader = !this.showLoader);
         },
 
         removeAds() {
-            window.location.href = "/";
+            window.location.href = this.urlOlxAdsPrefix;
         },
 
         successResponse(response) {

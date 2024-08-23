@@ -14,14 +14,12 @@ class AdsPaginationDTO
      * AdsPaginationDTO constructor.
      * @param int $limit
      * @param int $offset
-     * @param string $dateOrderBy
+     * @param bool $dateOrderBy
      */
-    public function __construct(int $limit, int $offset, string $dateOrderBy = "DESC")
+    public function __construct(int $limit, int $offset, bool $dateOrderBy)
     {
         $this->limit = $limit;
         $this->offset = $offset;
-        $this->dateOrderBy = $dateOrderBy;
+        $this->dateOrderBy = $dateOrderBy ? "ASC" : "DESC";
     }
-
-
 }

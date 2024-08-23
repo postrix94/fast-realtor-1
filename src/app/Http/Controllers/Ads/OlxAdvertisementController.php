@@ -5,12 +5,11 @@ namespace App\Http\Controllers\Ads;
 use App\Http\Controllers\Controller;
 use App\Http\Requests\Ads\AdsUpdateRequest;
 use App\Modules\Client\DTO\AdsPaginationDTO;
+use App\Modules\Client\DTO\AdsSearchDTO;
 use App\Modules\Client\Service\ActionClient;
 use App\Modules\OlxAdvertisement\DTO\OlxAdvertisementToArrayDTO;
 use App\Modules\OlxAdvertisement\Service\OlxAdvertisementService;
-use Carbon\Carbon;
 use Illuminate\Http\Request;
-use Illuminate\Support\Facades\Auth;
 
 class OlxAdvertisementController extends Controller
 {
@@ -40,11 +39,17 @@ class OlxAdvertisementController extends Controller
     public function getAds(Request $request, ActionClient $client) {
         $limit = $request->get("limit", 15);
         $offset = $request->get("offset", 0);
+        $search = $request->get("search", null);
+        $dateOrderBy = $request->get("dateOrderBy", false);
 
-        $paginateDTO = new AdsPaginationDTO($limit, $offset);
-        $ads = $client->ads($paginateDTO);
+        $adsSearch = new AdsSearchDTO($search);
+        $paginateDTO = new AdsPaginationDTO($limit, $offset, $dateOrderBy);
 
-        return response()->json(["ads" => $ads]);
+        $ads = $client->ads($paginateDTO, $adsSearch);
+
+        $urlOlxAdsPrefix = route("olx.ads.all");
+
+        return response()->json(["ads" => $ads, "urlOlxAdsPrefix" => $urlOlxAdsPrefix]);
     }
 
     public function edit(Request $request, string $slug, OlxAdvertisementService $olxAdvertisementService)
@@ -55,11 +60,12 @@ class OlxAdvertisementController extends Controller
             return abort(404);
         }
 
+        $urlOlxAdsPrefix = route("olx.ads.all");
+
         return view("pages.ads.ads_edit", [
             "title" => $ads->getTitle(),
             "ads" => OlxAdvertisementToArrayDTO::toArray($ads),
-            "url" => route("olx.ads.update", ["slug" => $slug]),
-            "public_url_ads" => route("olx.ads.show", ["slug" => $slug]),
+            "urlOlxAdsPrefix" => $urlOlxAdsPrefix,
         ]);
     }
 

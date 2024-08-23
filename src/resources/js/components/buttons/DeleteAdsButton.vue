@@ -6,19 +6,23 @@
 export default {
     name: "DeleteAdsButton",
     props: {
-      ads: {
-          required: true,
-          type: Object,
-      }
+        ads: {
+            required: true,
+            type: Object,
+        },
+
+        urlOlxAdsPrefix: {
+            required: true,
+            type: String,
+        }
     },
     emits: ['deleteAds'],
     methods: {
         deleleAds(ads) {
             if (!confirm(`Видалити оголошення ${ads.title} ?`)) return;
+            const url = `${this.urlOlxAdsPrefix}/${ads.slug}/delete`;
 
-            if(!ads.delete_url_ads) return;
-
-            axios.post(ads.delete_url_ads)
+            axios.post(url)
                 .then(this.successDeleteAds)
                 .catch(this.errorResponse);
         },

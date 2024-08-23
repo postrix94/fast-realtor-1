@@ -3,19 +3,19 @@
     <Menu/>
 
     <div class="mt-100 mb-5">
-        <div class="search mb-3">
-            <el-input v-model="search" size="small" placeholder="Пошук"/>
-        </div>
+
+        <search @search="getAds"/>
+
+        <el-checkbox @change="getAds" v-model="dateOrderBy">Самые старые по дате</el-checkbox>
 
         <el-table v-loading="loading" :data="this.tableData" stripe style="max-width: 100%">
-
             <el-table-column label="Оголошення" align="center">
                 <template #default="scope">
                     <div>
                         <small><strong>{{ scope.row.created }} - {{ scope.row.price }}</strong></small>
                     </div>
 
-                    <a :href="scope.row.public_url_ads">
+                    <a :href="`${urlOlxAdsPrefix}/${scope.row.slug}`">
                         {{ scope.row.title }}
                     </a>
 
@@ -23,14 +23,14 @@
                     <span class="d-flex justify-content-between w-50">
 
                          <el-tag type="success" size="default">
-                             <a :href="scope.row.edit_url_ads"><strong>edit</strong></a>
+                             <a :href="`${urlOlxAdsPrefix}/${scope.row.slug}/edit`"><strong>edit</strong></a>
                         </el-tag>
 
                           <el-tag type="info" size="default">
                              <a :href="scope.row.olx" target="_blank"><strong>olx</strong></a>
                         </el-tag>
 
-                        <DeleteAdsButton @deleteAds="removeAds" :ads="scope.row"/>
+                        <DeleteAdsButton @deleteAds="removeAds" :urlOlxAdsPrefix="urlOlxAdsPrefix" :ads="scope.row"/>
                     </span>
                     </div>
                 </template>
@@ -45,11 +45,12 @@
 import Menu from "../../components/navigation/Menu.vue";
 import DeleteAdsButton from "../../components/buttons/DeleteAdsButton.vue";
 import MainPagination from "../../components/pagination/MainPagination.vue";
+import Search from "../../components/search/Search.vue";
 
 
 export default {
     name: "AdsAll",
-    components: {MainPagination, DeleteAdsButton, Menu},
+    components: {Search, MainPagination, DeleteAdsButton, Menu},
     props: {
         url: {
             require: true,
@@ -60,14 +61,16 @@ export default {
         return {
             loading: true,
             tableData: [],
+            urlOlxAdsPrefix: null,
             totalRecords: 0,
-            search: null,
+            dateOrderBy: false,
             pagination: {
                 pageSize: 15,
                 pageSizes: [10, 15, 30, 50, 100],
                 currentPage: 1,
                 limit: 15,
                 offset: 0,
+                show: true,
             },
         }
     },
@@ -77,13 +80,26 @@ export default {
     },
 
     methods: {
-        getAds() {
+        getAds(search = null) {
             this.loading = true;
+            const data = {
+                limit: this.pagination.limit,
+                offset: this.pagination.offset,
+                dateOrderBy: this.dateOrderBy,
+            };
 
-            axios.post(this.url, {limit: this.pagination.limit, offset: this.pagination.offset})
+            if(search && search.title) {
+                data['search'] = search;
+                this.pagination.show = false;
+            }else {
+                this.pagination.show = true;
+            }
+
+            axios.post(this.url, data)
                 .then(this.successResponse)
                 .catch(this.errorResponse)
                 .finally(() => this.loading = false);
+
         },
 
         removeAds(id) {
@@ -95,6 +111,7 @@ export default {
         },
 
         successResponse(response) {
+            this.urlOlxAdsPrefix = response.data.urlOlxAdsPrefix;
             this.tableData = response.data.ads.ads;
             this.totalRecords = response.data.ads.totalRecords
         },
@@ -112,16 +129,6 @@ export default {
     margin-top: 100px;
 }
 
-.search {
-    width: 100%;
-    margin-left: auto;
-}
 
-@media (min-width: 776px) {
-    /* Стили для экранов шириной 776 пикселей и больше */
-    .search {
-        width: 25%;
-    }
-}
 
 </style>

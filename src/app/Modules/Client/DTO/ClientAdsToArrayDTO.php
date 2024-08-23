@@ -21,12 +21,10 @@ class ClientAdsToArrayDTO
             $list[] = [
                 "id" => $ads->getId(),
                 "title" => $ads->getTitle(),
+                "slug" => $ads->getSlug(),
                 "price" => $ads->getPrice(),
                 "olx" => $ads->getOlx(),
                 "created" => $ads->getCreatedAt(),
-                "public_url_ads" => route("olx.ads.show", ["slug" => $ads->getSlug()]),
-                "edit_url_ads" => route("olx.ads.edit", ["slug" => $ads->getSlug()]),
-                "delete_url_ads" => route("olx.ads.delete", ["slug" => $ads->getSlug()]),
             ];
         }
 

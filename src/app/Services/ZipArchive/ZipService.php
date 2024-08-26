@@ -38,10 +38,9 @@ class ZipService
         $zipFileName = Str::uuid() . $this->client->auth()->getId() . '.zip';
         $zipPath = Storage::disk("zip")->path("{$this->client->auth()->getId()}/{$zipFileName}");
 
-        
 
-        if(!Storage::disk("zip")->exists("{$this->client->auth()->getId()}/{$zipFileName}")) {
-            Storage::disk("zip")->makeDirectory("{$this->client->auth()->getId()}/{$zipFileName}");
+        if(!Storage::disk("zip")->exists("1")) {
+            Storage::disk("zip")->makeDirectory("1");
         }
 
         if ($this->zip->open($zipPath, ZipArchive::CREATE) !== TRUE) {
@@ -50,8 +49,6 @@ class ZipService
         }
 
         foreach ($images as $img) {
-            dd($img);
-            dd(Storage::disk("images")->exists($img));
             if (Storage::disk("images")->exists($img)) {
                 $fileName = basename($img);
                 $this->zip->addFile(Storage::disk("images")->path($img), $fileName);

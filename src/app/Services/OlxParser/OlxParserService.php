@@ -5,6 +5,7 @@ namespace App\Services\OlxParser;
 
 use App\Exceptions\CreateOlxAddException;
 use App\Exceptions\OlxRequestException;
+use App\Modules\OlxAdvertisement\OlxAdvertisement;
 use App\Modules\OlxAdvertisement\Service\OlxAdvertisementService;
 use App\Services\OlxParser\Infrastructure\OlxDOMCrawler;
 use App\Services\OlxParser\Requests\OlxRequest;
@@ -28,8 +29,13 @@ class OlxParserService
         $this->olxAdvertisementService = $olxAdvertisementService;
     }
 
-
-    public function getPublicLink(string $url)
+    /**
+     * @param string $url
+     * @return OlxAdvertisement
+     * @throws CreateOlxAddException
+     * @throws OlxRequestException
+     */
+    public function getOlxAds(string $url): OlxAdvertisement
     {
         $response = $this->olxRequest::handle($this->removeQueryParams($url));
 
@@ -46,7 +52,7 @@ class OlxParserService
             throw new CreateOlxAddException("не вдалося створити оголошення url {$url}");
         }
 
-        return $olxAds->publicLink();
+        return $olxAds;
     }
 
     /**

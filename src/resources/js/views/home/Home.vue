@@ -59,12 +59,13 @@ export default {
 
             this.loading = !this.loading;
 
-            axios.post(this.olx_parser_route, {olx_link: this.olx.trim()})
+            axios.post(this.olx_parser_route, {olx_link: this.olx.trim(), is_save_images: this.isSaveImages})
                 .then(this.successResponse)
                 .catch(this.errorResponse)
                 .finally(() => {
                     this.olx = "";
                     this.loading = !this.loading;
+                    this.isSaveImages = false;
                 });
 
         },

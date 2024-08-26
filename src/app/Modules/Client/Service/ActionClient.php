@@ -44,4 +44,12 @@ class ActionClient
             "totalRecords" => $result->totalRecords,
         ];
     }
+
+    /**
+     * @return bool
+     */
+    public function isSaveImages(): bool {
+        $permissions = $this->auth()->getPermissions()->filter(fn($permission) => $permission->isSaveImages());
+        return (bool) $permissions->count();
+    }
 }

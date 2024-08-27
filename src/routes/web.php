@@ -8,7 +8,6 @@ use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Logout\LogoutController;
 use App\Http\Controllers\Menu\MenuController;
 use App\Http\Controllers\Olx\OlxController;
-use App\Services\ZipArchive\ZipService;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(["guest"])->group(function () {
@@ -16,10 +15,10 @@ Route::middleware(["guest"])->group(function () {
     Route::post("login", [LoginController::class, "store"])->name("login.store");
 });
 
-Route::name("admin.")->prefix("admin")->middleware(["guest:admin"])->group(function () {
-    Route::get("login", [LoginAdminController::class, "index"])->name("login");
-    Route::post("login", [LoginAdminController::class, "store"])->name("login.store");
-});
+//Route::name("admin.")->prefix("admin")->middleware(["guest:admin"])->group(function () {
+//    Route::get("login", [LoginAdminController::class, "index"])->name("login");
+//    Route::post("login", [LoginAdminController::class, "store"])->name("login.store");
+//});
 
 
 Route::group(["middleware" => ["auth"],], function () {
@@ -42,23 +41,23 @@ Route::group(["middleware" => ["auth"],], function () {
         });
     });
 
-    Route::get("all", function () {
-        return view("pages.all");
-    })->name("all");
+//    Route::get("all", function () {
+//        return view("pages.all");
+//    })->name("all");
 
 });
 
 Route::get("olx/ads/{slug}", [OlxAdvertisementController::class, "index"])->name("olx.ads.show");
 
-Route::get("security", function () {
-
-    if (\Illuminate\Support\Facades\Gate::check(["add-new-user", "view-user"], \Illuminate\Support\Facades\Auth::user())) {
-        return view("pages.security");
-    }
-
-    return abort(404);
-
-
-})->middleware(["auth:admin", "role:super_admin"])->name("security");
+//Route::get("security", function () {
+//
+//    if (\Illuminate\Support\Facades\Gate::check(["add-new-user", "view-user"], \Illuminate\Support\Facades\Auth::user())) {
+//        return view("pages.security");
+//    }
+//
+//    return abort(404);
+//
+//
+//})->middleware(["auth:admin", "role:super_admin"])->name("security");
 
 Route::fallback(fn() => abort(404));

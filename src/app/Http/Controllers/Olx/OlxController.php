@@ -17,7 +17,7 @@ class OlxController extends Controller
     {
         $ads = $olxParserService->getOlxAds($request->get('olx_link'));
 
-        if ($request->get("is_save_images", false)) {
+        if ($client->isSaveImages() && $request->get("is_save_images", false)) {
             SaveImagesEvent::dispatch($ads->getImages());
 
             $images = Storage::disk('images')->files($client->auth()->getId());

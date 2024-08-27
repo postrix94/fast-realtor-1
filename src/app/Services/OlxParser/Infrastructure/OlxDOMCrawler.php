@@ -34,7 +34,7 @@ class OlxDOMCrawler
      */
     public function parse(ResponseOlxDTO $olxDto): OlxCrawlerDTO
     {
-        $this->crawler->addHtmlContent($olxDto->getHtml());
+        $this->crawler->addHtmlContent($olxDto->getResponse());
         $this->getInformation();
 
         return $this->olxCrawlerDTO;

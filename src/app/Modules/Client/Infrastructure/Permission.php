@@ -52,7 +52,10 @@ class Permission
         $this->guard_name = $guard_name;
     }
 
-
-
-
+    /**
+     * @return bool
+     */
+    public function isSaveImages(): bool {
+       return  $this->name === "save images";
+    }
 }

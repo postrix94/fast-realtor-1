@@ -31,7 +31,7 @@ class OlxRequest
             return new ResponseOlxDTO(statusCode: $e->getCode());
         }
 
-        return new ResponseOlxDTO(html: $response->body(), statusCode: $response->status());
+        return new ResponseOlxDTO(response: $response->body(), statusCode: $response->status());
     }
 
     /**

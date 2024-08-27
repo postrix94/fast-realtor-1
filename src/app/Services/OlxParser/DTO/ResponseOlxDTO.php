@@ -8,18 +8,18 @@ class ResponseOlxDTO
 {
     private const SUCCESS_HTTP_STATUS_CODE = 200;
     private int $statusCode;
-    private ?string $html;
+    private ?string $response;
 
 
     /**
      * ResponseOlxDTO constructor.
      * @param int $statusCode
-     * @param string|null $html
+     * @param string|null $response
      */
-    public function __construct(int $statusCode, string $html = null)
+    public function __construct(int $statusCode, string $response = null)
     {
         $this->statusCode = $statusCode;
-        $this->html = $html;
+        $this->response = $response;
     }
 
     /**
@@ -33,17 +33,15 @@ class ResponseOlxDTO
     /**
      * @return string|null
      */
-    public function getHtml(): ?string
+    public function getResponse(): ?string
     {
-        return $this->html;
+        return $this->response;
     }
 
     /**
      * @return bool
      */
     public function isSuccess(): bool {
-        return ((self::SUCCESS_HTTP_STATUS_CODE === $this->statusCode) && !is_null($this->html));
+        return ((self::SUCCESS_HTTP_STATUS_CODE === $this->statusCode) && !is_null($this->response));
     }
-
-
 }

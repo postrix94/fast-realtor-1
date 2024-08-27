@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "0dfbf8eb9f2be5f3831eae346b634456",
+    "content-hash": "a72047d96c9df00f87424d4e87959752",
     "packages": [
         {
             "name": "brick/math",
@@ -1820,6 +1820,55 @@
             ],
             "support": {
                 "source": "https://github.com/thephpleague/flysystem-local/tree/3.28.0"
+            },
+            "time": "2024-05-06T20:05:52+00:00"
+        },
+        {
+            "name": "league/flysystem-ziparchive",
+            "version": "3.28.0",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/thephpleague/flysystem-ziparchive.git",
+                "reference": "6b7f0448b4c6c1720d73ed905adb7020f61bdd14"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/thephpleague/flysystem-ziparchive/zipball/6b7f0448b4c6c1720d73ed905adb7020f61bdd14",
+                "reference": "6b7f0448b4c6c1720d73ed905adb7020f61bdd14",
+                "shasum": ""
+            },
+            "require": {
+                "ext-zip": "*",
+                "league/flysystem": "^3.0.0",
+                "league/mime-type-detection": "^1.0.0",
+                "php": "^8.0.2"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "League\\Flysystem\\ZipArchive\\": ""
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Frank de Jonge",
+                    "email": "info@frankdejonge.nl"
+                }
+            ],
+            "description": "ZIP filesystem adapter for Flysystem.",
+            "keywords": [
+                "Flysystem",
+                "file",
+                "files",
+                "filesystem",
+                "zip"
+            ],
+            "support": {
+                "source": "https://github.com/thephpleague/flysystem-ziparchive/tree/3.28.0"
             },
             "time": "2024-05-06T20:05:52+00:00"
         },

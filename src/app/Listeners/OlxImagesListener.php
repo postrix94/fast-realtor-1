@@ -30,8 +30,6 @@ class OlxImagesListener
      */
     public function handle(SaveImagesEvent $event): void
     {
-        $this->imageService->removeUserFolderImages();
-
         $event->images->each(function ($img) {
             $this->imageService->save($img->getLink());
         });

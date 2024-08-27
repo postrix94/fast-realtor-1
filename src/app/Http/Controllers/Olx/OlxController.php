@@ -21,11 +21,10 @@ class OlxController extends Controller
             SaveImagesEvent::dispatch($ads->getImages());
 
             $images = Storage::disk('images')->files($client->auth()->getId());
-            $zip = $zipService->imagesToArchive($images);
+            $zipPathDownload = $zipService->imagesToArchive($images);
 
+            return response()->json(["link" => $ads->publicLink(), "zip" => $zipPathDownload, "remove_zip_path" => route("remove.zip.images")]);
         }
-
-        dd($zip);
 
         return response()->json(["link" => $ads->publicLink()]);
     }

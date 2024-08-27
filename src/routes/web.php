@@ -1,12 +1,14 @@
 <?php
 
 use App\Http\Controllers\Ads\OlxAdvertisementController;
+use App\Http\Controllers\Download\ZipController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\Login\LoginAdminController;
 use App\Http\Controllers\Login\LoginController;
 use App\Http\Controllers\Logout\LogoutController;
 use App\Http\Controllers\Menu\MenuController;
 use App\Http\Controllers\Olx\OlxController;
+use App\Services\ZipArchive\ZipService;
 use Illuminate\Support\Facades\Route;
 
 Route::middleware(["guest"])->group(function () {
@@ -26,6 +28,8 @@ Route::group(["middleware" => ["auth"],], function () {
 
     Route::get("/", [HomeController::class, "index"])->name("home");
     Route::post("olx-parser", [OlxController::class, "store"])->name("olx.parser");
+    Route::post('remove-zip', [ZipController::class, "removeImagesOlx"])->name("remove.zip.images");
+
 
     Route::prefix("olx")->name("olx.")->group(function () {
         Route::get("ads", [OlxAdvertisementController::class, "all"])->name("ads.all");

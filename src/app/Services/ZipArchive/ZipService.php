@@ -5,6 +5,8 @@ namespace App\Services\ZipArchive;
 
 
 use App\Modules\Client\Service\ActionClient;
+use App\Services\SaveImage\SaveImage;
+use Illuminate\Support\Facades\Log;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 use ZipArchive;
@@ -20,32 +22,46 @@ class ZipService
      */
     private ActionClient $client;
 
+    private SaveImage $clientImages;
+
 
     /**
      * ZipService constructor.
      * @param ZipArchive $zip
      * @param ActionClient $client
+     * @param SaveImage $clientImages
      */
-    public function __construct(ZipArchive $zip, ActionClient $client)
+    public function __construct(ZipArchive $zip, ActionClient $client, SaveImage $clientImages)
     {
         $this->zip = $zip;
         $this->client = $client;
+        $this->clientImages = $clientImages;
     }
 
 
-    public function imagesToArchive(array $images)
+    /**
+     * @param array $images
+     * @param string|null $zipFileName
+     * @return string
+     * @throws \Exception
+     */
+    public function imagesToArchive(array $images, string $zipFileName = null): string
     {
-        $zipFileName = Str::uuid() . $this->client->auth()->getId() . '.zip';
-        $zipPath = Storage::disk("zip")->path("{$this->client->auth()->getId()}/{$zipFileName}");
+        $this->removeUserFolderZip();
 
+        $userId = $this->client->auth()->getId();
 
-        if(!Storage::disk("zip")->exists("1")) {
-            Storage::disk("zip")->makeDirectory("1");
+        if (is_null($zipFileName)) {
+            $zipFileName = Str::uuid() . $userId;
         }
 
+        $zipPath = Storage::disk("zip")->path("{$userId}/{$zipFileName}.zip");
+
+        $this->createUserFolder($userId);
+
         if ($this->zip->open($zipPath, ZipArchive::CREATE) !== TRUE) {
-            dd("hi");
-            return;
+            Log::channel("zip")->error("не вдалося створити архів для юзера з ID {$userId}");
+            throw new \Exception("zip помилка");
         }
 
         foreach ($images as $img) {
@@ -56,5 +72,32 @@ class ZipService
         }
 
         $this->zip->close();
+        $this->clientImages->removeUserFolderImages();
+
+        return Storage::disk("zip")->url("{$userId}/{$zipFileName}.zip");
+    }
+
+    /**
+     * @param string $name
+     */
+    private function createUserFolder(string $name): void
+    {
+        if (!Storage::disk("zip")->exists($name)) {
+            Storage::disk("zip")->makeDirectory($name);
+        }
+    }
+
+    /**
+     * @param int|null $userId
+     */
+    public function removeUserFolderZip(int $userId = null): void
+    {
+        if (is_null($userId) && $this->client->auth()) {
+            $userId = $this->client->auth()->getId();
+        }
+
+        if (Storage::disk("zip")->exists($userId)) {
+            Storage::disk("zip")->deleteDirectory($userId);
+        }
     }
 }

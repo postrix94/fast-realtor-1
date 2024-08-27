@@ -5,8 +5,7 @@ namespace App\Services\SaveImage;
 
 
 use App\Modules\Client\Service\ActionClient;
-use App\Services\SaveImage\Request\SaveImageRequest;
-use Illuminate\Support\Facades\Http;
+use App\Services\OlxParser\Requests\OlxRequest;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Str;
 
@@ -32,9 +31,9 @@ class SaveImage
      */
     public function save(string $url, ?string $filename = null)
     {
-        $img = SaveImageRequest::handle($url);
+        $responseDTO = OlxRequest::handle($url);
 
-        if (!$img) {
+        if (!$responseDTO->isSuccess()) {
             return;
         }
 
@@ -44,13 +43,18 @@ class SaveImage
             $filename = Str::uuid() . $this->client->auth()->getId();
         }
 
-        Storage::disk('images')->put($userDirectory . "/" . $filename . ".webp", $img);
+        Storage::disk('images')->put($userDirectory . "/" . $filename . ".webp", $responseDTO->getResponse());
     }
 
 
-    public function removeUserFolderImages(): void
+    /**
+     * @param int|null $userId
+     */
+    public function removeUserFolderImages(int $userId = null): void
     {
-        $userId = $this->client->auth()->getId();
+        if (is_null($userId) && $this->client->auth()) {
+            $userId = $this->client->auth()->getId();
+        }
 
         if (Storage::disk("images")->exists($userId)) {
             Storage::disk("images")->deleteDirectory($userId);

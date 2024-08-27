@@ -47,7 +47,7 @@ return [
         'images' => [
             'driver' => 'local',
             'root' => storage_path('app/images'),
-            'url' => env('APP_URL').'/storage',
+            'url' => env('APP_URL').'/storage/images',
             'visibility' => 'private',
             'throw' => false,
         ],
@@ -55,8 +55,8 @@ return [
         'zip' => [
             'driver' => 'local',
             'root' => storage_path('app/zip'),
-            'url' => env('APP_URL').'/storage',
-            'visibility' => 'public',
+            'url' => env('APP_URL').'/storage/zip',
+            'visibility' => 'private',
             'throw' => false,
         ],
 
@@ -87,6 +87,8 @@ return [
 
     'links' => [
         public_path('storage') => storage_path('app/public'),
+        public_path('storage/images') => storage_path('app/images'),
+        public_path('storage/zip') => storage_path('app/zip'),
     ],
 
 ];

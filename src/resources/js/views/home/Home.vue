@@ -1,7 +1,8 @@
 <template>
     <Navigation/>
 
-    <div v-loading="loading" element-loading-background="rgba(122, 122, 122, 0.9)" class="mt-100 d-flex justify-content-center">
+    <div v-loading="loading" element-loading-background="rgba(122, 122, 122, 0.9)"
+         class="mt-100 d-flex justify-content-center">
         <div class="col-12 col-md-8">
             <el-input
                 v-model="olx"
@@ -17,7 +18,7 @@
             </div>
 
             <div v-if="isShowLink" class="d-flex justify-content-center">
-                <el-tag  type="info"><a target="_blank" :href="publicLink">{{publicLink}}</a></el-tag>
+                <el-tag type="info"><a target="_blank" :href="publicLink">посилання на оголошення</a></el-tag>
             </div>
         </div>
     </div>
@@ -74,9 +75,29 @@ export default {
             return this.regexpOlxLink.test(link);
         },
 
+        downloadZip(pathDownload, pathRemoveZip) {
+            const url = window.URL.createObjectURL(new Blob([pathDownload]));
+            const link = document.createElement('a');
+            link.href = pathDownload;
+            link.setAttribute('download', this.getFileName(pathDownload)); // Укажите имя файла, которое будет предложено при скачивании
+            document.body.appendChild(link);
+            link.click();
+            link.remove()
+
+            axios.post(pathRemoveZip);
+        },
+
+        getFileName(url) {
+            const result = url.split("/");
+            return result[6] ? result[6] : "images.zip";
+        },
+
         successResponse(response) {
             this.isShowLink = !this.isShowLink
             this.publicLink = response.data.link
+            if (response.data.zip && response.data.remove_zip_path) {
+                this.downloadZip(response.data.zip, response.data.remove_zip_path);
+            }
         },
 
         errorResponse(error) {
@@ -86,21 +107,18 @@ export default {
                 this.$errorNotify("Помилка");
             }
         },
-
-
     }
-
 
 }
 </script>
 
 <style scoped>
-    a {
-        text-decoration: none;
-    }
+a {
+    text-decoration: none;
+}
 
-    .mt-100 {
-        margin-top: 100px;
-    }
+.mt-100 {
+    margin-top: 100px;
+}
 
 </style>

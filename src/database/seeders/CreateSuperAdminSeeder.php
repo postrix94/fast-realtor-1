@@ -10,6 +10,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Config;
 use Illuminate\Support\Facades\Hash;
 use Spatie\Permission\Models\Permission;
+use Spatie\Permission\Models\Role;
 
 class CreateSuperAdminSeeder extends Seeder
 {
@@ -28,9 +29,10 @@ class CreateSuperAdminSeeder extends Seeder
         ]);
 
         $permissions = Permission::all();
+        $roles = Role::all();
 
-        Config::set("auth.defaults.guard", "admin");
+//        Config::set("auth.defaults.guard", "admin");
 
-        $user->assignRole(["name" => Config::get("super_admin.role_name")]);
+        $user->assignRole($roles);
     }
 }

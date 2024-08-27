@@ -6,6 +6,8 @@ namespace App\Modules\Client\Infrastructure;
 
 class Permission
 {
+    private const SAVE_IMAGES_PERMISSION = "save images";
+
     private string $name;
     private string $guard_name;
 
@@ -56,6 +58,6 @@ class Permission
      * @return bool
      */
     public function isSaveImages(): bool {
-       return  $this->name === "save images";
+       return  $this->name === self::SAVE_IMAGES_PERMISSION;
     }
 }

@@ -17,7 +17,7 @@
                 <el-checkbox v-model="isSaveImages" label="Зберегти фото" size="large" style="color: #ffffff"/>
             </div>
 
-            <div v-if="isShowLink" class="d-flex justify-content-center">
+            <div v-if="isShowLink" class="d-flex justify-content-center mt-3">
                 <el-tag type="info"><a target="_blank" :href="publicLink">посилання на оголошення</a></el-tag>
             </div>
         </div>
